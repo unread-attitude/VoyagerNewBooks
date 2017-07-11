@@ -4,11 +4,16 @@ package Lang;
 #                                                                             #
 #  New Books List, Version 7.3 for Unix                                       #
 #                                                                             #
-#  Language interface configuration template                                  #
+#  Chinese: language interface configuration file                             #
 #                                                                             #
 #  Michael Doran, doran@uta.edu                                               #
 #  University of Texas at Arlington Library                                   #
 #  Box 19497, Arlington, TX 76019, USA                                        #
+#                                                                             #
+#  Translation done by:                                                       #
+#       rough translation via translate.google.com                            #
+#       translation review and editing by Fen Lu, UT Arlington Library        #
+#       any remaining mistakes and awkward syntax are mine                    #
 #                                                                             #
 #  More information at: http://rocky.uta.edu/doran/newbooks/                  #
 #                                                                             #
@@ -36,7 +41,7 @@ use Encode;
 # 
 #  Editing this configuration file involves changing the values being
 #  assigned to variables.  For the most part, this will take the form of:
-#      $variable = "value");
+#      $variable = "value";
 #  I.e., the variable will be prefaced with a "$" and the value will be
 #  enclosed in quotes.
 # 
@@ -44,7 +49,7 @@ use Encode;
 #  Note also that Perl quote syntax can take multiple forms, e.g.:  
 #  
 #  Double quote sytax:
-#     $variable = "value");
+#     $variable = "value";
 #            or
 #     $variable = qq(value);
 #
@@ -69,12 +74,12 @@ use Encode;
 #  diacritic characters, the decode function does no harm. 
 #
 ###############################################################################
- 
-$this_service = decode_utf8("");
 
-$page_title   = decode_utf8("");
+$this_service = decode_utf8("新图书");
 
-$tab_title    = decode_utf8("New Books Search");
+$page_title   = decode_utf8("新图书检索");
+
+$tab_title    = "New Books Search";
 
 # IMPORTANT: To change the search tab text, you must edit the
 #            page.search.buttons.newbooks.button value in the
@@ -91,59 +96,60 @@ $tab_title    = decode_utf8("New Books Search");
 #  This gets appended to print/email results
 
 $org_info  = decode_utf8(q( 
-Your organizational info goes here...
+大学图书馆
+中国
 ));
 
 $email_reply_to_address = 'reference@uta.edu';
 
 #  Language interface
 
-    $all_locations_text     = decode_utf8("");
+    $all_locations_text     = decode_utf8("所有分馆");
 
     # Search form page
-    $select_location_label  = decode_utf8("");
-    $display_interval_label = decode_utf8("");
-    $search_for_label       = decode_utf8("");
-    $records_per_page_label = decode_utf8("");
-    $records_per_page       = decode_utf8("");
-    $search_button          = decode_utf8("");
+    $select_location_label  = decode_utf8("选择馆藏位置:");
+    $display_interval_label = decode_utf8("限制时间：");
+    $search_for_label       = decode_utf8("检索：");
+    $records_per_page_label = decode_utf8("纪录每页：");
+    $records_per_page       = decode_utf8("个纪录每页");
+    $search_button          = decode_utf8("检索");
 
     # Results list page
-    $nav_next               = decode_utf8("");
-    $nav_prev               = decode_utf8("");
-    $location_preface       = decode_utf8("");
-    $results_sorted_by      = decode_utf8("");
-    $results_of             = decode_utf8("");
-    $results_items          = decode_utf8("");
-    $edit_search_btn        = decode_utf8("");
+    $nav_next               = decode_utf8("下一页");
+    $nav_prev               = decode_utf8("前一页");
+    $location_preface       = decode_utf8("馆藏位置： ");
+    $results_sorted_by      = decode_utf8("排序");
+    $results_of             = decode_utf8("…的");
+    $results_items          = decode_utf8("项目");
+    $edit_search_btn        = decode_utf8("编辑检索");
     $call_number_preface    = decode_utf8("");
-    $location_temp_preface  = decode_utf8("");
+    $location_temp_preface  = decode_utf8("暂时在：");
     # Sort By dropdown
-    $sort_by_label          = decode_utf8("");
-    $sort_label_call_no     = decode_utf8("");
-    $sort_label_author      = decode_utf8("");
-    $sort_label_title       = decode_utf8("");
+    $sort_by_label          = decode_utf8("排序：");
+    $sort_label_call_no     = decode_utf8("索取号");
+    $sort_label_author      = decode_utf8("作者");
+    $sort_label_title       = decode_utf8("题名");
 
     # Print/email
-    $sb_print_button        = decode_utf8("");
-    $sb_email_button        = decode_utf8("");
-    $sb_clear_button        = decode_utf8("");
-    $sb_select_string       = decode_utf8("");
-    $sb_all_onpage          = decode_utf8("");
+    $sb_print_button        = decode_utf8("打印");
+    $sb_email_button        = decode_utf8("电子邮件");
+    $sb_clear_button        = decode_utf8("清除");
+    $sb_select_string       = decode_utf8("选择");
+    $sb_all_onpage          = decode_utf8("所有网页");
 
     # Messages
-    $msg_no_results         = decode_utf8("");
-    $msg_none_selected      = decode_utf8("");
-    $msg_email_sent         = decode_utf8("");
-    $msg_email_err          = decode_utf8("");
-    $msg_email_err_noaddr   = decode_utf8("");
-    $msg_email_err_faulty   = decode_utf8("");
-    $msg_email_err_prog     = decode_utf8("");
+    $msg_no_results         = decode_utf8("没有找到所需文献。");
+    $msg_none_selected      = decode_utf8("没有任何项目被选中。");
+    $msg_email_sent         = decode_utf8("您的电子邮件已发送。");
+    $msg_email_err          = decode_utf8("您的电子邮件请求失败。");
+    $msg_email_err_noaddr   = decode_utf8("你忘了输入您的电子邮件地址。");
+    $msg_email_err_faulty   = decode_utf8("请检查电子邮件地址。");
+    $msg_email_err_prog     = decode_utf8("服务器的邮件程式发生错误，请通知管理员。");
 
     # Email form
-    $email_form_to          = decode_utf8("");
-    $email_form_subject     = decode_utf8("");
-    $email_form_text        = decode_utf8("");
+    $email_form_to          = decode_utf8("收件人：");
+    $email_form_subject     = decode_utf8("主题：");
+    $email_form_text        = decode_utf8("正文：");
 
 
 ##########################################################
@@ -152,7 +158,7 @@ $email_reply_to_address = 'reference@uta.edu';
 #
 #  Appears below the table on the initial search form.
 
-$search_tips  = decode_utf8(q(<b>Search Tips:</b> Yada, yada...));
+$search_tips  = decode_utf8(q(<b>检索提示：</b> 雅达，雅达，雅达...));
 
 
 ##########################################################
@@ -168,20 +174,20 @@ $search_tips  = decode_utf8(q(<b>Search Tips:</b> Yada, yada...));
 $interval = $NewBooksIni::interval;
 $interval_plural;
 if ($interval eq "month") {
-    $interval = decode_utf8("month");
-    $interval_plural = decode_utf8("months");
+    $interval = decode_utf8("一个月");
+    $interval_plural = decode_utf8("个月");
 } else {
-    $interval = decode_utf8("week");
-    $interval_plural = decode_utf8("weeks");
+    $interval = decode_utf8("一周");
+    $interval_plural = decode_utf8("周");
 } 
 
 #  This goes in the period box of the search form
 
-$last_text              = decode_utf8("");
+$last_text              = decode_utf8("最近的");
 
 #  These variables adjust the syntax of the period box
 
-$last_text_order        = "after";
+$last_text_order        = "before";
 $swap_last_and_interval = "no";
 
 ###############################################################################
@@ -190,3 +196,4 @@ $swap_last_and_interval = "no";
 
 1;
 
+__END__

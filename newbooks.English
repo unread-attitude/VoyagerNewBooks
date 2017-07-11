@@ -1,110 +1,168 @@
-########################################################################
-#
-#  newbooks.English : a New Books List language module
-#
-#  Version: 6.1 Unicode
-#
-#  Created by Michael Doran, doran@uta.edu
-#
-#  University of Texas at Arlington Libraries
-#  Box 19497, Arlington, TX 76019, USA
-#
-#  More information at: http://rocky.uta.edu/doran/autolist/
-#
-########################################################################
-#
-#  Copyright 2000-2005, The University of Texas at Arlington ("UTA").
-#  All rights reserved.
-#
-#  By using this software the USER indicates that he or she 
-#  has read, understood and and will comply with the following:
-#
-#  UTA hereby grants USER permission to use, copy, modify, and
-#  distribute this software and its documentation for any 
-#  purpose and without fee, provided that:
-#
-#  1. the above copyright notice appears in all copies of the
-#  software and its documentation, or portions thereof, and
-#
-#  2. a full copy of this notice is included with the software 
-#  and its documentation, or portions thereof, and
-#
-#  3. neither the software nor its documentation, nor portions
-#  thereof, is sold for profit.  Any commercial sale or license
-#  of this software, copies of the software, its associated
-#  documentation and/or modifications of either is strictly
-#  prohibited without the prior consent of UTA.
-#
-#  Title to copyright to this software and its associated
-#  documentation shall at all times remain with UTA.  No right
-#  is granted to use in advertising, publicity or otherwise any
-#  trademark, service mark, or the name of UTA.
-#
-#  This software and any associated documentation are provided
-#  "as is," and UTA MAKES NO REPRESENTATIONS OR WARRANTIES,
-#  EXPRESSED OR IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR
-#  FITNESS FOR A PARTICULAR PURPOSE, OR THAT USE OF THE SOFTWARE,
-#  MODIFICATIONS, OR ASSOCIATED DOCUMENTATION WILL NOT INFRINGE
-#  ANY PATENTS, COPYRIGHTS, TRADEMARKS OR OTHER INTELLECTUAL
-#  PROPERTY RIGHTS OF A THIRD PARTY. UTA, The University of Texas
-#  System, its Regents, officers, and employees shall not be
-#  liable under any circumstances for any direct, indirect, special,
-#  incidental, or consequential damages with respect to any claim
-#  by USER or any third party on account of or arising from the
-#  use, or inability to use, this software or its associated
-#  documentation, even if UTA has been advised of the possibility
-#  of those damages.
-#
-#  Submit commercialization requests to: The University of Texas
-#  at Arlington, Office of Grant and Contract Services, 701 South
-#  Nedderman Drive, Box 19145, Arlington, Texas 76019-0145,
-#  ATTN: Director of Technology Transfer.
-#
-########################################################################
-#
-#  "Voyager" and "WebVoyage" are trademarks of Endeavor Information
-#  Systems, Inc.
-#
-########################################################################
+package Lang;
+
+###############################################################################
+#                                                                             #
+#  New Books List, Version 7.3 for Unix                                       #
+#                                                                             #
+#  English language interface configuration file                              #
+#                                                                             #
+#  Michael Doran, doran@uta.edu                                               #
+#                                                                             #
+#  University of Texas at Arlington Library                                   #
+#  Box 19497, Arlington, TX 76019, USA                                        #
+#                                                                             #
+#  More information at: http://rocky.uta.edu/doran/newbooks/                  #
+#                                                                             #
+###############################################################################
+#                                                                             #
+#  Copyright 2000-2017, The University of Texas at Arlington ("UTA").         #
+#  All rights reserved.  See included LICENSE for particulars.                #
+#                                                                             #
+###############################################################################
 
 
-##########################################################
-#  WebVoyage multilingual image files 
-##########################################################
+###############################################################################
+# 
+#  Advice on editing this configuration file
 #
-#  Image files are commonly segregated according to language
-#  by subdirectory within the webvoyage image directory.
-#  For example:
-#	/m1/voyager/xxxdb/webvoyage/html/images/English
-#	/m1/voyager/xxxdb/webvoyage/html/images/Finnish
-#	/m1/voyager/xxxdb/webvoyage/html/images/Swedish
-
-#  If your WebVoyage setup uses a separate subdirectory for
-#  English language images, then supply that information here.
-
-$image_subdir = "";
-#$image_subdir = "/English";
-
-
-##########################################################
-#  What your service is called. 
-##########################################################
+#  The uncommented lines of this file are actual Perl code that gets
+#  incorporated into the main newBooks.cgi script.  That means that they
+#  have to observe the proper Perl syntax.  As with any code, a seemingly
+#  minor syntax error can cause the program to fail.
 #
-#  This goes in the "New Books" search tab, etc.
+#  Before editing this file, make a backup copy.  That way, if you make an
+#  inadvertant syntax error (and can't figure out what it is), you can
+#  always revert back to your known good backup copy.
+# 
+#  Editing this configuration file involves changing the values being
+#  assigned to variables.  For the most part, this will take the form of:
+#      $variable = "value";
+#  I.e., the variable will be prefaced with a "$" and the value will be
+#  enclosed in quotes.
+# 
+#  Some values will be enclosed by double quotes and some by single quotes.
+#  Note also that Perl quote syntax can take multiple forms, e.g.:  
+#  
+#  Double quote sytax:
+#     $variable = "value";
+#            or
+#     $variable = qq(value);
+#
+#  Single quote syntax:
+#     $variable = 'value';
+#            or
+#     $variable = q(value);
+#
+#  Do not arbitrarily change the quote syntax unless you know what you
+#  are doing.  For more about Perl quotes and quote-like operators,
+#  refer to:  
+#    http://perldoc.perl.org/perlop.html#Quote-and-Quote-like-Operators
+# 
+###############################################################################
 
 $this_service = "New Books";
 
-# Page title
+$page_title   = "New Books Search";
 
-$page_title = "$this_service";
+$tab_title    = "New Books Search";
+
+# IMPORTANT: To change the search tab text, you must edit the
+#            page.search.buttons.newbooks.button value in the
+#            webvoyage.properties file for the appropriate skin
+#
+# IMPORTANT: The value for $tab_title above MUST MATCH the value
+#            of the page.search.buttons.newbooks.message
+#            attribute in the webvoyage.properties file
 
 
 ##########################################################
-#  Intervals of weeks or months 
+#  Institutional Information
 ##########################################################
 #
-#  This value is set in newbooks.ini.
+#  This gets appended to print/email results
 
+$org_info  = q( 
+University of Texas at Arlington
+UT Arlington Library
+Box 19497 Arlington, Texas 76019
+Phone: (817) 272-3394
+Email: reference@uta.edu
+);
+
+$email_reply_to_address = 'reference@uta.edu';
+
+#  Language interface
+
+    $all_locations_text     = "All locations";
+
+    # Search form page
+    $select_location_label  = "Find new books in:";
+    $display_interval_label = "for:";
+    $search_for_label       = "Search for: (optional)";
+    $records_per_page_label = "Records per page:";
+    $records_per_page       = "records per page";
+    $search_button          = "Search";
+
+    # Results list page
+    $nav_next               = "Next";
+    $nav_prev               = "Prev";
+    $location_preface       = "";
+    $results_sorted_by      = "sorted by";
+    $results_of             = "of";
+    $results_items          = "items";
+    $edit_search_btn        = "Edit Search";
+    $call_number_preface    = "";
+    $location_temp_preface  = "Temporarily at";
+    # Sort By dropdown
+    $sort_by_label          = "Sort by:";
+    $sort_label_call_no     = "call number";
+    $sort_label_author      = "author";
+    $sort_label_title       = "title";
+
+    # Print/email
+    $sb_print_button        = "Print";
+    $sb_email_button        = "Email";
+    $sb_clear_button        = "Clear";
+    $sb_select_string       = "Select";
+    $sb_all_onpage          = "All on page";
+
+    # Messages
+    $msg_no_results         = "Search resulted in no hits.";
+    $msg_none_selected      = "No items were selected.";
+    $msg_email_sent         = "Your Email has been sent.";
+    $msg_email_err          = "Your Email request failed.";
+    $msg_email_err_noaddr   = "You forgot to enter your email address.";
+    $msg_email_err_faulty   = "Please check the email address.";
+    $msg_email_err_prog     = "Server mail program error, please notify webmaster.";
+
+    # Email form
+    $email_form_to          = "To:";
+    $email_form_subject     = "Subject:";
+    $email_form_text        = "Body Text:";
+
+    
+##########################################################
+#  Short "search tips blurb" 
+##########################################################
+#
+#  Appears below the table on the initial search form.
+
+$search_tips  = q(<b>Search Tips:</b> Search by title word (e.g. Texas), author's name (e.g. Sagan), or start of a call number (e.g. QC).);
+
+
+##########################################################
+#  Intervals of weeks or months
+##########################################################
+#
+#  The weeks or months interval is set in newBooks.ini
+#
+#  This is where you specify the *labels* for those intervals.
+#  
+#  Careful... this is code.  Only change the values within quotes!
+#  And chances are this is just fine like it is!!
+
+$interval = $NewBooksIni::interval;
+$interval_plural;
 if ($interval eq "month") {
     $interval = "month";
     $interval_plural = "months";
@@ -113,174 +171,19 @@ if ($interval eq "month") {
     $interval_plural = "weeks";
 }
 
-#  This goes in the period box of the form
+#  This goes in the period box of the search form
 
 $last_text = "last";
 
-#  This determines word order for where $last_text appears,
-#  (in relation to the week or month number).  It is assumed
-#  to be "before" and this only needs to be uncommented
-#  for the applicable languages (e.g. Finnish).
+#  English language sites do not need to edit these two variables
+$last_text_order = "before";
+$swap_last_and_interval = "no";
 
-#$last_text_order = "after";
+###############################################################################
+#  Do not edit below here.                                                    # 
+###############################################################################
 
+1;
 
-##########################################################
-#  Location preface option 
-##########################################################
-#
-#  This affects all entries in the results listing pages.
-#
-#  To preface locations with a phrase of your choice
-#  assign to this variable whatever is appropriate for your
-#  library.  If you want locations to display *without*
-#  any explanatory preface, either comment out this line
-#  or assign it a null value ("").
+__END__
 
-$location_preface = "Location: ";
-$location_temp_preface = "Temporarily at";
-
-
-##########################################################
-#  Call number and web link preface options 
-##########################################################
-#
-#  These affect entries in the results listing pages.
-#
-#  To preface call numbers with a phrase of your choice
-#  assign to this variable whatever is appropriate for your
-#  library.  If you want call numbers to display *without*
-#  any explanatory preface, either comment out this line
-#  or assign it a null value ("").  Ditto for web link.
-
-$call_number_preface = "Call Number: ";
-
-$web_link_preface = "Web Link: ";
-
-
-##########################################################
-#  The "other" tabs for the internal search form. 
-##########################################################
-#
-#  Note that the third tab can be turned off in the
-#  newbooks.ini file.
-
-$first_tab              = "Simple Search";
-$second_tab             = "Advanced Search";
-$third_tab              = "Course Reserves";
-
-#  If WebVoyage uses multiple languages, some or all of them require
-#  a name/value pair in the Pwebrecon query string.  A good example
-#  of this is Helka (http://helka.csc.fi). Here is where that value
-#  is supplied so that the "other" tab links go to the right
-#  language version of WebVoyage.  This also affects the ISBN/title
-#  canned links back to WebVoyage.
-
-#    $pwebrecon_link_language = "LANGUAGE=English&";
-$pwebrecon_link_language = "";
-
-
-##########################################################
-#  Short keyword searching explanation 
-##########################################################
-#
-#  Appears below the table on the initial search form.
-
-$short_expl  = "Search by title word (e.g. Texas),
-		   author's name (e.g. Sagan), or
-		   start of a call number (e.g. QC).";
-
-
-##########################################################
-#  Locations
-##########################################################
-#
-#  If you want the English interface locations names to
-#  vary from the default that is set in newbooks.ini,
-#  then replace "XXXXXXX" with "English".  Note that
-#  fragments match the actual location name as extracted
-#  from the Voyager database, so should be the same values
-#  as the fragments used in the newbooks.ini file.
-#
-#  See also: http://rocky.uta.edu/doran/autolist/faq.html#fragment
-
-if ($language eq "XXXXXXX") {
-   $all_locations_text = "All locations";
-   @locations = ("Central", "Central Library",
-		 "Archite", "Architecture &#38; Fine Arts",
-		 "Science", "Science &#38; Engineering",
-		 "Special", "Special Collections",
-		 "Gov", "US Government Publications",
-		 "Internet", "Internet Resources");
-}
-
-
-#  English interface
-
-    # Form labels
-    $select_location_label  = "Select Location:";
-    $display_interval_label = "Period:";
-    $sort_by_label          = "Sort by:";
-    $search_for_label       = "Search for: (optional)";
-
-    # Mini-form labels
-    $miniform_location_label         = "Location:";
-    $miniform_search_for_label       = "Search for:";
-
-    # Sort categories
-    $sort_label_call_no     = "call number";
-    $sort_label_author      = "author";
-    $sort_label_title       = "title";
-
-    # Form buttons
-    $search_button          = "Search";
-    $reset_button           = "Reset";
-
-    # Form box text 
-    $records_per_page       = "records per page";
-
-    #  Short Blurb appears on the right side of the search form. 
-    #  You'll likely have to experiment with line breaks.
-    #  (Alternately, you can insert a small graphic.)
-    $short_blurb            = "A list of<br />new books,<br />videos, etc.";
-
-    #  Results pages column headings
-    $column_heading_title   = "Title";
-    $column_heading_author  = "Author";
-
-    $results_search         = "Search";
-    $results_term_type      = "keyword";
-    $results_sorted_by      = "sorted by";
-    $results_of		    = "of";
-    $results_items	    = "items";
-    $clear_selected_text    = "Clear Selected";
-    $retain_selected_text   = "Retain Selected";
-    $back_to_top_text       = "Back to top";
-
-    # Save results box strings
-    $sb_save_title	    = "Save Options";
-    $sb_records  	    = "Records";
-    $sb_all_onpage          = "All on page";
-    $sb_selected_onpage     = "Selected on page";
-    $sb_selected_allpages   = "Selected all pages";
-    $sb_print_save_email    = "Print/Save or Email";
-    $sb_print_button        = "Download or Print";
-    $sb_email_text          = "Enter E-Mail address:";
-    $sb_email_button        = "Email the Records";
-
-    # Misc. text
-    $err_no_results         = "no results";
-    $msg_email_sent         = "Your Email has been sent.";
-    $msg_email_err          = "Your Email request failed.";
-    $msg_email_err_noaddr   = "You forgot to enter your email address, please try again.";
-    $msg_email_err_faulty   = "Retry your request or ask for assistance.";
-    $msg_email_err_prog     = "Server mail program error, please notify webmaster.";
-
-    # Alt text for images
-    $img_alt_patron         = "Patron Info";
-    $img_alt_help           = "Help";
-    $img_alt_exit           = "Exit";
-    $img_alt_prev           = "Previous page of records";
-    $img_alt_next           = "Next page of records";
-
-return 1;

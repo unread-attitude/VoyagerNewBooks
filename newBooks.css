@@ -1,0 +1,34 @@
+/*
+#(c)#=====================================================================
+#(c)#
+#(c)#       New Books List : Cascading Style Sheet
+#(c)#
+#(c)#=====================================================================
+
+**          Product : WebVoyage :: newBooks css
+**          Version : 7.2
+**          Created : 05-MAY-2008
+**      Orig Author : Michael Doran
+**    Last Modified : 05-MAY-2008
+** Last Modified By : Michael Doran
+**
+**  For the most part, the New Books List utilizes the already existing
+**  WebVoyage stylesheets, and changes made to those will show up in
+**  the New Books List.  
+**
+*/
+
+.yellowBtn {
+    text-decoration:	none;
+}
+
+.thumbNail {
+    float:		right;
+    margin-top:		3px;
+    margin-bottom:	3px;
+    margin-right:	10px;
+}
+
+/*
+*/
+

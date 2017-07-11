@@ -1,10 +1,10 @@
-#!/m1/shared/bin/perl -w
+#!/m1/shared/bin/perl
 
 ########################################################################
 #
-#  newbooks.pl : a New Books List program
+#  newBooks.pl : a New Books List program
 #
-#  Version: 6.1.1 for Unix
+#  Version: 7.3 for Unix
 #
 #  Created by Michael Doran, doran@uta.edu
 #
@@ -16,74 +16,26 @@
 #      extracts data on "new" items via an SQL query.
 #   2) The second part of the script transfers the
 #      flat-file database to where it can be accessed
-#      by the New Books CGI program (newbooks.cgi).
+#      by the New Books CGI program (newBooks.cgi).
 #
-#  More information at: http://rocky.uta.edu/doran/autolist/
-#
-########################################################################
-#
-#  Copyright 2000-2005, The University of Texas at Arlington ("UTA").
-#  All rights reserved.
-#
-#  By using this software the USER indicates that he or she 
-#  has read, understood and and will comply with the following:
-#
-#  UTA hereby grants USER permission to use, copy, modify, and
-#  distribute this software and its documentation for any 
-#  purpose and without fee, provided that:
-#
-#  1. the above copyright notice appears in all copies of the
-#  software and its documentation, or portions thereof, and
-#
-#  2. a full copy of this notice is included with the software 
-#  and its documentation, or portions thereof, and
-#
-#  3. neither the software nor its documentation, nor portions
-#  thereof, is sold for profit.  Any commercial sale or license
-#  of this software, copies of the software, its associated
-#  documentation and/or modifications of either is strictly
-#  prohibited without the prior consent of UTA.
-#
-#  Title to copyright to this software and its associated
-#  documentation shall at all times remain with UTA.  No right
-#  is granted to use in advertising, publicity or otherwise any
-#  trademark, service mark, or the name of UTA.
-#
-#  This software and any associated documentation are provided
-#  "as is," and UTA MAKES NO REPRESENTATIONS OR WARRANTIES,
-#  EXPRESSED OR IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR
-#  FITNESS FOR A PARTICULAR PURPOSE, OR THAT USE OF THE SOFTWARE,
-#  MODIFICATIONS, OR ASSOCIATED DOCUMENTATION WILL NOT INFRINGE
-#  ANY PATENTS, COPYRIGHTS, TRADEMARKS OR OTHER INTELLECTUAL
-#  PROPERTY RIGHTS OF A THIRD PARTY. UTA, The University of Texas
-#  System, its Regents, officers, and employees shall not be
-#  liable under any circumstances for any direct, indirect, special,
-#  incidental, or consequential damages with respect to any claim
-#  by USER or any third party on account of or arising from the
-#  use, or inability to use, this software or its associated
-#  documentation, even if UTA has been advised of the possibility
-#  of those damages.
-#
-#  Submit commercialization requests to: The University of Texas
-#  at Arlington, Office of Grant and Contract Services, 701 South
-#  Nedderman Drive, Box 19145, Arlington, Texas 76019-0145,
-#  ATTN: Director of Technology Transfer.
+#  More information at: http://rocky.uta.edu/doran/newbooks/
 #
 ########################################################################
 #
-#  "Voyager" and "WebVoyage" are trademarks of Endeavor Information
-#  Systems, Inc.
+#  Copyright 2000-2017, The University of Texas at Arlington ("UTA").
+#  All rights reserved.  See included LICENSE for particulars.
 #
 ########################################################################
-
-#  Best practices.  :-)
+#
+#  "Voyager" and "WebVoyage" are trademarks of Ex Libris
+#
+########################################################################
 
 use strict;
 
 #  This program requires the DBI and DBD::Oracle modules
 #  which are not a part of the default Perl distribution.
-#  Endeavor installs the database modules as part of the 
-#  Voyager 2000.1, or later upgrades.
+#  Since Voyager 2000.1, Ex Libris has installed them.
 
 use DBI;
 
@@ -95,11 +47,11 @@ use DBI;
 #  environment variables that would already be set if we
 #  were running this from the command line while logged in.
 #  To see if your values for these are the same, run the
-#  "env" command while logged in as 'voyager' to your 
-#  database server.
+#  "env" command while logged in to your database server
+#  as the 'voyager' user.
 
 $ENV{ORACLE_SID} = "VGER";
-$ENV{ORACLE_HOME} = "/oracle/app/oracle/product/9.2.0";
+$ENV{ORACLE_HOME} = "/oracle/app/oracle/product/10.2.0/db_1";
 
 #  Database name
 #  Substitute your database in place of xxxdb.
@@ -109,7 +61,7 @@ my $db_name = "xxxdb";
 #  Name of the output flat-file of new book records
 #  You probably shouldn't change this variable.
 
-my $out_file = "newbooks.txt";
+my $out_file = "newBooks.txt";
 
 #  Voyager directory prefix
 #  You probably won't need to change this variable.
@@ -126,39 +78,23 @@ my $report_dir = "$dir_prefix/voyager/$db_name/rpt";
 #  Note: The read-only username and password may be
 #        different with the Unicode upgrade.
 #        e.g. ro_xxxdb/ro_xxxdb
+#  You WILL need to change these variables.
 
-my $username = "dbread";
-my $password = "dbread";
+my $username = "ro_xxxdb";
+my $password = "ro_xxxdb";
 
 
 ######################################
 #  The SQL
 #
 #  The query that extracts "new" items out of the Voyager database
-#  is divided into three parts that are run sequentially:
-#   SQL pass 1 - physical items (may have a bib 856)
+#  is divided into two parts that are run sequentially:
+#   SQL pass 1 - physical items
 #   SQL pass 2 - electronic-only items with a mfhd 856
-#   SQL pass 3 - electronic-only items with a  bib 856
 #
-#  The default is to run pass 1 and pass 2.  Pass 3 may pull
-#  problematic items for some libraries so is optional. 
-#  (For instance in our library it pulls physical items that
-#  are on order but not yet received.)  Running pass 3 also
-#  has the potential to produce duplicate records if your library
-#  copies 856 data from the bib to the mfhd and leaves the 856 in
-#  the bib record.
-#
-#  Details of the logic involved in how newbooks.pl defines "what
+#  Details of the logic involved in how newBooks.pl defines "what
 #  is a new item" (with respect to the Voyager database tables),
 #  can best be determined  by examining the actual SQL code below.
-#  Or, visit http://rocky.uta.edu/doran/autolist/secure/sql.htm
-#  and login with username "voyager" and password "magnolia".
-
-#  Choices are:
-#	 no  (the default SQL pass 1 and pass 2) - recommended
-#	 yes (the default SQL pass 1 and pass 2 *plus* pass 3)
-
-my $pass_three = "no";
 
 
 ######################################
@@ -166,9 +102,9 @@ my $pass_three = "no";
 #
 #  You have the option of retrieving either 4 weeks
 #  or 4 months worth of items.  This option also
-#  appears in the newbooks.ini config file.
+#  appears in the newBooks.ini config file.
 #  Obviously, THE SELECTION YOU MAKE HERE MUST MATCH
-#  the selection in newbooks.ini in order for your
+#  the selection in newBooks.ini in order for your
 #  results to make sense. 
 #
 #  This option was added so that smaller libraries
@@ -202,21 +138,21 @@ my $lag_time = "1";
 #
 #  There are three options for transferring the output file
 #     1) Copy it to a directory - This is the obvious choice
-#        if you run newbooks.pl on the same server that you
-#        run the newbooks.cgi program.
-#     2) Remote copy it to another server - This is the 
-#        recommended method for transferring to a remote
-#        server.  It requires that you create a ".rhosts"
-#        file in the home directory of the voyager user on
-#        the remote machine.
+#        if you run newBooks.pl on the same server that you
+#        run the newBooks.cgi program.
+#     2) Remote copy it to another server - This is one 
+#        method for transferring to a remote server.
+#        It requires that you create a ".rhosts" file in the
+#        home directory of the voyager user on the remote
+#        machine.
 #     3) FTP it to another server - this requires the Perl
-#        Net::FTP module (a component of the libnet collection).
+#        Net::FTP module (which should already be installed).
 #        This option requires that you include the username 
 #        and password of the voyager user on the remote machine.
 
 #  First select which option (choices are 1, 2, or 3).
 
-my $transfer_option = "2";
+my $transfer_option = "1";
 
 #  Then edit the variables for your option choice:
 
@@ -229,8 +165,7 @@ my $transfer_option = "2";
 #  This directory is the final destination
 #  (on this server) for the output file.
 
-my $destination_dir = "$dir_prefix/voyager/$db_name/webvoyage/cgi-bin";
-
+my $destination_dir = "$dir_prefix/voyager/$db_name/tomcat/vwebv/context/vwebv/newbooks";
 
 ######################################
 #  Transfer option 2: remote copy
@@ -265,7 +200,7 @@ my $destination_dir = "$dir_prefix/voyager/$db_name/webvoyage/cgi-bin";
 #
 #  The remote copy method should work on all Unix platforms 
 #  provided you create the .rhosts file and that you run 
-#  the newbooks.pl program as the voyager user (or via the
+#  the newBooks.pl program as the voyager user (or via the
 #  voyager crontab). 
 #
 #  Also, on the WebVoyage server:
@@ -280,7 +215,7 @@ my $destination_dir = "$dir_prefix/voyager/$db_name/webvoyage/cgi-bin";
 #	in.rshd: 123.45.67.89
 #  (use the IP address of your Voyager database server.)
 
-my $remote_dir = "/m1/voyager/$db_name/webvoyage/cgi-bin";
+my $remote_dir = "/m1/voyager/$db_name/tomcat/vwebv/context/vwebv/newbooks";
 
 my $webvoyage_server = "your.server.edu";
 
@@ -289,11 +224,8 @@ my $webvoyage_server = "your.server.edu";
 #
 #  Since this requires you to supply the voyager username and 
 #  password, I recommend that you set permissions on this script
-#  to 700 (i.e. chmod 700 newbooks.pl).  The voyager user should
+#  to 700 (i.e. chmod 700 newBooks.pl).  The voyager user should
 #  be the owner of the script.
-#
-#  This method should work on all Unix platforms provided 
-#  you have installed the Perl libnet module containing Net::FTP.
 
 my $ftpuser = "voyager";
 my $passwd  = "xxxxxxx";
@@ -318,9 +250,6 @@ my $passwd  = "xxxxxxx";
 ########################################################################
 #
 #  Most Voyager sites should not have to edit code beyond this point.
-#
-#  However, if you are a Perl programmer or just adventuresome, then
-#  by all means have at it.  :-)
 #
 ########################################################################
 
@@ -359,68 +288,73 @@ sub DoQuery {
 
     while( my (@entry) = $sth->fetchrow_array() ) {
 	if ($entry[0]) { 
+            # bib_id
 	    print OUTFILE "$entry[0]\t"; 
 	} else { 
 	    print OUTFILE "\t"; 
 	}
 	if ($entry[1]) { 
-	    my $author = $entry[1];
-	    print OUTFILE "$author\t"; 
+            # isbn 
+            my $isbn = $entry[1];
+            $isbn =~ s/[^\d]*([\d|\-|X]*)[\s|\[|\(]*.*/$1/;
+	    print OUTFILE "$isbn\t"; 
 	} else { 
 	    print OUTFILE "\t"; 
 	}
 	if ($entry[2]) {
-	    my $title = $entry[2];
-	    print OUTFILE "$title\t"; 
+            # bib_format 
+	    print OUTFILE "$entry[2]\t"; 
 	} else {
 	    print OUTFILE "\t";
 	}
 	if ($entry[3]) { 
-	    my $edition = $entry[3];
-	    print OUTFILE "$edition\t"; 
+            # author 
+	    print OUTFILE "$entry[3]\t"; 
 	} else { 
 	    print OUTFILE "\t"; 
 	}
 	if ($entry[4]) { 
-	    my $imprint = $entry[4];
-	    print OUTFILE "$imprint\t"; 
+            # title 
+	    print OUTFILE "$entry[4]\t"; 
 	} else { 
 	    print OUTFILE "\t"; 
 	}
 	if ($entry[5]) { 
-	    my $location_display_name_permanent = $entry[5];
-	    print OUTFILE "$location_display_name_permanent\t"; 
+            # edition 
+	    print OUTFILE "$entry[5]\t"; 
 	} else { 
 	    print OUTFILE "\t"; 
 	} if ($entry[6]) { 
-	    my $location_display_name_temporary = $entry[6];
-	    print OUTFILE "$location_display_name_temporary\t"; 
+            # imprint 
+	    print OUTFILE "$entry[6]\t"; 
 	} else { 
 	    print OUTFILE "\t"; 
 	}
 	if ($entry[7]) { 
-	    my $display_call_no = $entry[7];
-	    print OUTFILE "$display_call_no\t"; 
+            # permanent location 
+	    print OUTFILE "$entry[7]\t"; 
 	} else { 
-	    # Note: In Process entries deliberately have
-	    # a leading space for sorting purposes.
-	    print OUTFILE " In Process\t"; 
+	    print OUTFILE "\t"; 
 	}
 	if ($entry[8]) { 
-	    my $normalized_call_no = $entry[8];
-	    print OUTFILE "$normalized_call_no\t"; 
+            # temporary location 
+	    print OUTFILE "$entry[8]\t"; 
 	} else { 
-	    print OUTFILE " In Process\t"; 
+	    print OUTFILE "\t"; 
 	}
 	if ($entry[9]) { 
+            # display call number
 	    print OUTFILE "$entry[9]\t"; 
 	} else { 
-	    print OUTFILE "\t"; 
+            # Note: In Process entries deliberately have
+            # a leading space for sorting purposes.
+            print OUTFILE " In Process\t";
 	}
 	if ($entry[10]) { 
-	    print OUTFILE "$entry[10]\t"; 
+            # normalized call number 
+            print OUTFILE "$entry[10]\t"; 
 	} else { 
-	    print OUTFILE "\t"; 
+            print OUTFILE " In Process\t";
 	}
 	if ($entry[11]) { 
 	    print OUTFILE "$entry[11]\n"; 
@@ -444,65 +378,68 @@ sub DoQuery {
 
     while( my (@entry) = $sth->fetchrow_array() ) {
 	if ($entry[0]) { 
+            # bib_id
 	    print OUTFILE "$entry[0]\t"; 
 	} else { 
 	    print OUTFILE "\t"; 
 	}
 	if ($entry[1]) { 
-	    my $author = $entry[1];
-	    print OUTFILE "$author\t"; 
+            # isbn 
+            my $isbn = $entry[1];
+            $isbn =~ s/[^\d]*([\d|\-|X]*)[\s|\[|\(]*.*/$1/;
+	    print OUTFILE "$isbn\t"; 
 	} else { 
 	    print OUTFILE "\t"; 
 	}
 	if ($entry[2]) {
-	    my $title = $entry[2];
-	    print OUTFILE "$title\t"; 
+            # bib_format 
+	    print OUTFILE "$entry[2]\t"; 
 	} else {
 	    print OUTFILE "\t";
 	}
 	if ($entry[3]) { 
-	    my $edition = $entry[3];
-	    print OUTFILE "$edition\t"; 
+            # author 
+	    print OUTFILE "$entry[3]\t"; 
 	} else { 
 	    print OUTFILE "\t"; 
 	}
 	if ($entry[4]) { 
-	    my $imprint = $entry[4];
-	    print OUTFILE "$imprint\t"; 
+            # title 
+	    print OUTFILE "$entry[4]\t"; 
 	} else { 
 	    print OUTFILE "\t"; 
 	}
 	if ($entry[5]) { 
-	    my $location_display_name_permanent = $entry[5];
-	    print OUTFILE "$location_display_name_permanent\t"; 
+            # edition 
+	    print OUTFILE "$entry[5]\t"; 
 	} else { 
 	    print OUTFILE "\t"; 
-	}
-	print OUTFILE "\t"; 
-	if ($entry[6]) { 
-	    my $display_call_no = $entry[6];
-	    print OUTFILE "$display_call_no\t"; 
+	} if ($entry[6]) { 
+            # imprint 
+	    print OUTFILE "$entry[6]\t"; 
 	} else { 
-	    # Note: In Process entries deliberately have
-	    # a leading space for sorting purposes.
-	    print OUTFILE " In Process\t"; 
+	    print OUTFILE "\t"; 
 	}
 	if ($entry[7]) { 
-	    my $normalized_call_no = $entry[7];
-	    print OUTFILE "$normalized_call_no\t"; 
+            # permanent location 
+	    print OUTFILE "$entry[7]\t"; 
 	} else { 
-	    print OUTFILE " In Process\t"; 
+	    print OUTFILE "\t"; 
 	}
+        print OUTFILE "\t";
 	if ($entry[8]) { 
+            # display call number
 	    print OUTFILE "$entry[8]\t"; 
 	} else { 
-	    print OUTFILE "\t"; 
+            # Note: In Process entries deliberately have
+            # a leading space for sorting purposes.
+            print OUTFILE "\t";
 	}
 	if ($entry[9]) { 
-	    chomp (my $link_text = $entry[9]);
-	    print OUTFILE "$link_text\t"; 
+            # normalized call number 
+	    print OUTFILE "$entry[9]\t"; 
 	} else { 
-	    print OUTFILE "\t"; 
+            print OUTFILE "\t";
 	}
 	if ($entry[10]) { 
 	    print OUTFILE "$entry[10]\n"; 
@@ -510,92 +447,6 @@ sub DoQuery {
 	    print OUTFILE "\n"; 
 	}
     }
-
-  if ($pass_three eq "yes") {
-
-    # Prepare the third SQL statement
-    $sth = $dbh->prepare(&ConstructSQL("3")) 
-	|| die $dbh->errstr;
-
-    # Run the SQL query
-    $sth->execute
-	|| die $dbh->errstr;
-
-
-    # Output the results to a file
-    open (OUTFILE, ">>$report_dir/$out_file")
-	|| die "Cannot create/open output file: $!";
-
-    while( my (@entry) = $sth->fetchrow_array() ) {
-	if ($entry[0]) { 
-	    print OUTFILE "$entry[0]\t"; 
-	} else { 
-	    print OUTFILE "\t"; 
-	}
-	if ($entry[1]) { 
-	    my $author = $entry[1];
-	    print OUTFILE "$author\t"; 
-	} else { 
-	    print OUTFILE "\t"; 
-	}
-	if ($entry[2]) {
-	    my $title = $entry[2];
-	    print OUTFILE "$title\t"; 
-	} else {
-	    print OUTFILE "\t";
-	}
-	if ($entry[3]) { 
-	    my $edition = $entry[3];
-	    print OUTFILE "$edition\t"; 
-	} else { 
-	    print OUTFILE "\t"; 
-	}
-	if ($entry[4]) { 
-	    my $imprint = $entry[4];
-	    print OUTFILE "$imprint\t"; 
-	} else { 
-	    print OUTFILE "\t"; 
-	}
-	if ($entry[5]) { 
-	    my $location_display_name_permanent = $entry[5];
-	    print OUTFILE "$location_display_name_permanent\t"; 
-	} else { 
-	    print OUTFILE "\t"; 
-	}
-	print OUTFILE "\t"; 
-	if ($entry[6]) { 
-	    my $display_call_no = $entry[6];
-	    print OUTFILE "$display_call_no\t"; 
-	} else { 
-	    # Note: In Process entries deliberately have
-	    # a leading space for sorting purposes.
-	    print OUTFILE " In Process\t"; 
-	}
-	if ($entry[7]) { 
-	    my $normalized_call_no = $entry[7];
-	    print OUTFILE "$normalized_call_no\t"; 
-	} else { 
-	    print OUTFILE " In Process\t"; 
-	}
-	if ($entry[8]) { 
-	    print OUTFILE "$entry[8]\t"; 
-	} else { 
-	    print OUTFILE "\t"; 
-	}
-	if ($entry[9]) { 
-	    chomp (my $link_text = $entry[9]);
-	    print OUTFILE "$link_text\t"; 
-	} else { 
-	    print OUTFILE "\t"; 
-	}
-	if ($entry[10]) { 
-	    print OUTFILE "$entry[10]\n"; 
-	} else { 
-	    print OUTFILE "\n"; 
-	}
-    }
-
-  }
 
     $sth->finish;
 
@@ -662,13 +513,15 @@ sub ConstructSQL {
     #  "what constitutes a new item" should be adequate
     #  for all sites.  If it isn't, you may create your
     #  own; however, it must output the same fields in
-    #  order for the newbooks.cgi to utilize it.  -mdd
+    #  order for the newBooks.cgi to utilize it.  -mdd
     my $date_condition_one = &SetInterval("one");
     my $date_condition_two = &SetInterval("two");
     if ($sql_pass eq "1") {
 	return ("
 	select distinct
 	  $db_name.bib_text.bib_id,
+	  $db_name.bib_text.isbn,
+	  $db_name.bib_text.bib_format,
 	  $db_name.bib_text.author,
 	  $db_name.bib_text.title,
 	  $db_name.bib_text.edition,
@@ -677,8 +530,6 @@ sub ConstructSQL {
 	  $db_name.temporary.location_display_name,
 	  $db_name.mfhd_master.display_call_no,
 	  $db_name.mfhd_master.normalized_call_no,
-	  $db_name.elink_index.link,
-	  $db_name.elink_index.link_text,
 	  (ceil (((sysdate - $db_name.mfhd_master.update_date) $date_condition_one),
 	  (ceil (((sysdate - $db_name.mfhd_master.create_date) $date_condition_one)
 	from
@@ -689,8 +540,7 @@ sub ConstructSQL {
 	  $db_name.mfhd_master,
 	  $db_name.item,
 	  $db_name.location permanent,
-	  $db_name.location temporary,
-	  $db_name.elink_index
+	  $db_name.location temporary
 	where
 	  $db_name.bib_master.bib_id=$db_name.bib_text.bib_id and
 	  $db_name.bib_text.bib_id=$db_name.bib_mfhd.bib_id and
@@ -699,11 +549,8 @@ sub ConstructSQL {
 	  $db_name.mfhd_item.item_id=$db_name.item.item_id and
 	  $db_name.item.perm_location=$db_name.permanent.location_id and
 	  $db_name.item.temp_location=$db_name.temporary.location_id(+) and
-	  $db_name.bib_master.bib_id=$db_name.elink_index.record_id(+) and
 	  $db_name.mfhd_master.suppress_in_opac not in ('Y') and
 	  $db_name.bib_master.suppress_in_opac not in ('Y') and
-	  ($db_name.elink_index.record_type in ('B') or
-	   $db_name.elink_index.record_type is null) and
 	  $db_name.item.on_reserve not in ('Y') and
 	  substr($db_name.bib_text.bib_format,-1,1) in ('a','c','m') and
 	  $db_name.item.create_date between $date_condition_two and 
@@ -714,6 +561,8 @@ sub ConstructSQL {
 	return ("
 	select distinct
 	  $db_name.bib_text.bib_id,
+	  $db_name.bib_text.isbn,
+	  $db_name.bib_text.bib_format,
 	  $db_name.bib_text.author,
 	  $db_name.bib_text.title,
 	  $db_name.bib_text.edition,
@@ -721,8 +570,6 @@ sub ConstructSQL {
 	  $db_name.location.location_display_name,
 	  $db_name.mfhd_master.display_call_no,
 	  $db_name.mfhd_master.normalized_call_no,
-	  $db_name.elink_index.link,
-	  $db_name.elink_index.link_text,
 	  (ceil (((sysdate - $db_name.mfhd_master.create_date) $date_condition_one)
 	from
 	  $db_name.bib_master,
@@ -739,42 +586,6 @@ sub ConstructSQL {
 	  $db_name.mfhd_master.location_id=$db_name.location.location_id and
 	  $db_name.mfhd_master.mfhd_id=$db_name.elink_index.record_id and
 	  $db_name.elink_index.record_type in ('M') and
-	  $db_name.mfhd_master.mfhd_id=$db_name.mfhd_item.mfhd_id(+) and
-	  $db_name.mfhd_item.item_id is null and
-	  $db_name.mfhd_master.suppress_in_opac not in ('Y') and
-	  $db_name.bib_master.suppress_in_opac not in ('Y') and
-	  $db_name.mfhd_master.create_date between $date_condition_two and
-	  $db_name.elink_index.link is not null
-	");
-    } elsif ($sql_pass eq "3") {
-	return ("
-	select distinct
-	  $db_name.bib_text.bib_id,
-	  $db_name.bib_text.author,
-	  $db_name.bib_text.title,
-	  $db_name.bib_text.edition,
-	  $db_name.bib_text.imprint,
-	  $db_name.location.location_display_name,
-	  $db_name.mfhd_master.display_call_no,
-	  $db_name.mfhd_master.normalized_call_no,
-	  $db_name.elink_index.link,
-	  $db_name.elink_index.link_text,
-	  (ceil (((sysdate - $db_name.mfhd_master.create_date) $date_condition_one)
-	from
-	  $db_name.bib_master,
-	  $db_name.bib_text,
-	  $db_name.bib_mfhd,
-	  $db_name.mfhd_master,
-	  $db_name.mfhd_item,
-	  $db_name.location,
-	  $db_name.elink_index
-	where
-	  $db_name.bib_master.bib_id=$db_name.bib_text.bib_id and
-	  $db_name.bib_text.bib_id=$db_name.bib_mfhd.bib_id and
-	  $db_name.bib_mfhd.mfhd_id=$db_name.mfhd_master.mfhd_id and
-	  $db_name.mfhd_master.location_id=$db_name.location.location_id and
-	  $db_name.bib_master.bib_id=$db_name.elink_index.record_id and
-	  $db_name.elink_index.record_type in ('B') and
 	  $db_name.mfhd_master.mfhd_id=$db_name.mfhd_item.mfhd_id(+) and
 	  $db_name.mfhd_item.item_id is null and
 	  $db_name.mfhd_master.suppress_in_opac not in ('Y') and
@@ -811,7 +622,7 @@ if      ($transfer_option eq "1" ) {
 ##########################################################
 #
 #  This routine copies the output file to the directory
-#  on this server where you keep newbooks.cgi.
+#  on this server where you keep newBooks.cgi.
 
 sub CopyFile {
     use File::Copy;
@@ -826,7 +637,7 @@ sub CopyFile {
 ##########################################################
 #
 #  This routine does a remote copy of the output file to
-#  the directory on the server where newbooks.cgi is.
+#  the directory on the server where newBooks.cgi is.
 
 sub RemoteCopyFile {
     system("/usr/bin/rcp $report_dir/$out_file $webvoyage_server:$remote_dir/$out_file");

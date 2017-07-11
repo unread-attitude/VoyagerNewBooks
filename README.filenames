@@ -1,0 +1,46 @@
+2008-04-23  Michael Doran, doran@uta.edu
+
+!! IMPORTANT !! IMPORTANT !! IMPORTANT !!  IMPORTANT !!
+
+FILE NAMES in the /m1/voyager/{xxxdb}/tomcat/vwebv/context/vwebv/htdocs/vwebv
+directory MUST NOT CONFLICT with the file stems listed in the Apache 
+/m1/shared/apache2/conf/ActivatedVirtualHosts/{xxxdb}.jkmounts.conf conf file:
+
+  add*
+  cal*
+  can*
+  cha*
+  com*
+  cor*
+  del*
+  edi*
+  ema*
+  ent*
+  exi*
+  exp*
+  ext*
+  get*
+  hea*
+  hol*
+  log*
+  med*
+  myA*
+  myL*
+  myS*
+  pat*
+  per*
+  pol*
+  pri*
+  rad*
+  ran*
+  rec*
+  ren*
+  sav*
+  sea*
+  sel*
+  sen*
+  sta*
+  tit*
+  val*
+  vvw*
+  vwe*

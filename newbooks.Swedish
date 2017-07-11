@@ -1,294 +1,204 @@
-########################################################################
+package Lang;
+
+###############################################################################
+#                                                                             #
+#  New Books List, Version 7.3 for Unix                                       #
+#                                                                             #
+#  Swedish language interface configuration file                              #
+#                                                                             #
+#  Michael Doran, doran@uta.edu                                               #
+#  University of Texas at Arlington Library                                   #
+#  Box 19497, Arlington, TX 76019, USA                                        #
+#                                                                             #
+#  Translation contributions from:                                            #
+#	Tomas Friberg, The Royal Library (National Library of Sweden)         # 
+#  Any mistranslations are mine                                               #
+#                                                                             #
+#  More information at: http://rocky.uta.edu/doran/newbooks/                  #
+#                                                                             #
+###############################################################################
+#                                                                             #
+#  Copyright 2000-2017, The University of Texas at Arlington ("UTA").         #
+#  All rights reserved.  See included LICENSE for particulars.                #
+#                                                                             # 
+###############################################################################
+
+use Encode;
+
+###############################################################################
+# 
+#  Advice on editing this configuration file
 #
-#  newbooks.Swedish : a New Books List language module
+#  The uncommented lines of this file are actual Perl code that gets
+#  incorporated into the main newBooks.cgi script.  That means that they
+#  have to observe the proper Perl syntax.  As with any code, a seemingly
+#  minor syntax error can cause the program to fail.
 #
-#  Version: 6.1 Unicode
+#  Before editing this file, make a backup copy.  That way, if you make an
+#  inadvertant syntax error (and can't figure out what it is), you can
+#  always revert back to your known good backup copy.
+# 
+#  Editing this configuration file involves changing the values being
+#  assigned to variables.  For the most part, this will take the form of:
+#      $variable = "value");
+#  I.e., the variable will be prefaced with a "$" and the value will be
+#  enclosed in quotes.
+# 
+#  Some values will be enclosed by double quotes and some by single quotes.
+#  Note also that Perl quote syntax can take multiple forms, e.g.:  
+#  
+#  Double quote sytax:
+#     $variable = "value");
+#            or
+#     $variable = qq(value);
 #
-#  Created by Michael Doran, doran@uta.edu
-#  Translation contributions from:
-#	Tomas Friberg, The Royal Library (National Library of Sweden) 
+#  Single quote syntax:
+#     $variable = 'value';
+#            or
+#     $variable = q(value);
 #
-#  University of Texas at Arlington Libraries
-#  Box 19497, Arlington, TX 76019, USA
+#  Do not arbitrarily change the quote syntax unless you know what you
+#  are doing.  For more about Perl quotes and quote-like operators,
+#  refer to:  
+#    http://perldoc.perl.org/perlop.html#Quote-and-Quote-like-Operators
+# 
+###############################################################################
 #
-#  More information at: http://rocky.uta.edu/doran/autolist/
+#  Unicode UTF-8 encoded values can be assigned to these variables.
 #
-########################################################################
+#  To avoid mangling those values during later processing in the script,
+#  we must let Perl know that they *are* UTF-8 encoded.  We do this by
+#  applying the 'decode_utf8' function to our string.  If your values are
+#  plain ASCII, or if you prefer to use character entity references for
+#  diacritic characters, the decode function does no harm. 
 #
-#  Copyright 2000-2005, The University of Texas at Arlington ("UTA").
-#  All rights reserved.
+###############################################################################
+ 
+$this_service = decode_utf8("Nyförvärv");
+
+$page_title   = decode_utf8("Nyförvärv sökning");
+
+$tab_title    = decode_utf8("New Books Search");
+
+# IMPORTANT: To change the search tab text, you must edit the
+#            page.search.buttons.newbooks.button value in the
+#            webvoyage.properties file for the appropriate skin
 #
-#  By using this software the USER indicates that he or she 
-#  has read, understood and and will comply with the following:
+# IMPORTANT: The value for $tab_title above MUST MATCH the value
+#            of the page.search.buttons.newbooks.message
+#            attribute in the webvoyage.properties file
+
+##########################################################
+#  Institutional Information
+##########################################################
 #
-#  UTA hereby grants USER permission to use, copy, modify, and
-#  distribute this software and its documentation for any 
-#  purpose and without fee, provided that:
-#
-#  1. the above copyright notice appears in all copies of the
-#  software and its documentation, or portions thereof, and
-#
-#  2. a full copy of this notice is included with the software 
-#  and its documentation, or portions thereof, and
-#
-#  3. neither the software nor its documentation, nor portions
-#  thereof, is sold for profit.  Any commercial sale or license
-#  of this software, copies of the software, its associated
-#  documentation and/or modifications of either is strictly
-#  prohibited without the prior consent of UTA.
-#
-#  Title to copyright to this software and its associated
-#  documentation shall at all times remain with UTA.  No right
-#  is granted to use in advertising, publicity or otherwise any
-#  trademark, service mark, or the name of UTA.
-#
-#  This software and any associated documentation are provided
-#  "as is," and UTA MAKES NO REPRESENTATIONS OR WARRANTIES,
-#  EXPRESSED OR IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR
-#  FITNESS FOR A PARTICULAR PURPOSE, OR THAT USE OF THE SOFTWARE,
-#  MODIFICATIONS, OR ASSOCIATED DOCUMENTATION WILL NOT INFRINGE
-#  ANY PATENTS, COPYRIGHTS, TRADEMARKS OR OTHER INTELLECTUAL
-#  PROPERTY RIGHTS OF A THIRD PARTY. UTA, The University of Texas
-#  System, its Regents, officers, and employees shall not be
-#  liable under any circumstances for any direct, indirect, special,
-#  incidental, or consequential damages with respect to any claim
-#  by USER or any third party on account of or arising from the
-#  use, or inability to use, this software or its associated
-#  documentation, even if UTA has been advised of the possibility
-#  of those damages.
-#
-#  Submit commercialization requests to: The University of Texas
-#  at Arlington, Office of Grant and Contract Services, 701 South
-#  Nedderman Drive, Box 19145, Arlington, Texas 76019-0145,
-#  ATTN: Director of Technology Transfer.
-#
-########################################################################
-#
-#  "Voyager" and "WebVoyage" are trademarks of Endeavor Information
-#  Systems, Inc.
-#
-########################################################################
+#  This gets appended to print/email results
+
+$org_info  = decode_utf8(q( 
+Bibliotek
+Universitet
+bibliotek@universitet.edu
+));
+
+$email_reply_to_address = 'reference@uta.edu';
+
+#  Language interface
+
+    $all_locations_text     = decode_utf8("Alla placeringar");
+
+    # Search form page
+    $select_location_label  = decode_utf8("Välj Placering:");
+    $display_interval_label = decode_utf8("Tidsperiod:");
+    $search_for_label       = decode_utf8("Sökord:");
+    $records_per_page_label = decode_utf8("Poster per sida");
+    $records_per_page       = decode_utf8("poster per sida");
+    $search_button          = decode_utf8("Sök");
+
+    # Results list page
+    $nav_next               = decode_utf8("Nästa");
+    $nav_prev               = decode_utf8("Föregående");
+    $location_preface       = decode_utf8("Placering: ");
+    $results_sorted_by      = decode_utf8("sortering");
+    $results_of             = decode_utf8("av");
+    $results_items          = decode_utf8("poster");
+    $edit_search_btn        = decode_utf8("Redigera sök");
+    $call_number_preface    = decode_utf8("Hyllsignum: ");
+    $location_temp_preface  = decode_utf8("Temporär placering:");
+    # Sort By dropdown
+    $sort_by_label          = decode_utf8("Sortera efter:");
+    $sort_label_call_no     = decode_utf8("hyllsignum");
+    $sort_label_author      = decode_utf8("författare");
+    $sort_label_title       = decode_utf8("titel");
+
+    # Print/email
+    $sb_print_button        = decode_utf8("Utskrift/Spara");
+    $sb_email_button        = decode_utf8("E-posta poster");
+    $sb_clear_button        = decode_utf8("Ta bort");
+    $sb_select_string       = decode_utf8("Utvälja");
+    $sb_all_onpage          = decode_utf8("Allt på sidan");
+
+    # Messages
+    $msg_no_results         = decode_utf8("Inga träffar");
+    $msg_none_selected      = decode_utf8("");
+    $msg_email_sent         = decode_utf8("Meddelandet skickades.");
+    $msg_email_err          = decode_utf8("Meddelandet skickades inte.");
+    $msg_email_err_noaddr   = decode_utf8("Du angav ingen epost-adress, försök igen.");
+    $msg_email_err_faulty   = decode_utf8("Försök igen för att få assistans.");
+    $msg_email_err_prog     = decode_utf8("Fel på mail-server, v.g. kontakta webmaster.");
+
+    # Email form
+    $email_form_to          = decode_utf8("Att:");
+    $email_form_subject     = decode_utf8("Subjekt:");
+    $email_form_text         = decode_utf8("Budskap:");
 
 
 ##########################################################
-#  WebVoyage multilingual image files
+#  Short "search tips blurb" 
 ##########################################################
 #
-#  Image files are commonly segregated according to language
-#  by subdirectory within the WebVoyage image directory.
-#  For example:
-#       /m1/voyager/xxxdb/webvoyage/html/images/English
-#       /m1/voyager/xxxdb/webvoyage/html/images/Finnish
-#       /m1/voyager/xxxdb/webvoyage/html/images/Swedish
+#  Appears below the table on the initial search form.
 
-#  If your WebVoyage setup uses a separate subdirectory for
-#  Swedish language images, then supply that information here.
-
-$image_subdir = "/Swedish";
-
-
-##########################################################
-#  What your service is called. 
-##########################################################
-#
-#  This goes in the "New Books" search tab, etc.
-
-$this_service = "Nyförvärv";
-#$this_service = "Nya Böcker";
-
-#  Page title
-
-$page_title = "$this_service";
+$search_tips  = decode_utf8(q(<b>Search Tips:</b> yada, yada... ));
 
 
 ##########################################################
 #  Intervals of weeks or months 
 ##########################################################
 #
-#  This value is set in newbooks.ini.
+#  This value is set in newBooks.ini.
+#
+#  This is where you specify the *labels* for those intervals.
+#  
+#  Careful... this is code.  Only change the values within quotes!
 
+$interval = $NewBooksIni::interval;
+$interval_plural;
 if ($interval eq "month") {
-    $interval = "månaden";
-    $interval_plural = "månader";
+    $interval = decode_utf8("månaden");
+    $interval_plural = decode_utf8("månader");
 } else {
-    $interval = "veckan";
-    $interval_plural = "veckor";
-}
+    $interval = decode_utf8("veckan");
+    $interval_plural = decode_utf8("veckor");
+} 
 
-#  This goes in the period box of the form
+#  This goes in the period box of the search form
 
-$last_text = "senaste";
+$last_text              = decode_utf8("senaste");
 
-#  This determines word order for where $last_text appears,
-#  (in relation to the week or month number).  It is assumed
-#  to be "before" and this only needs to be uncommented
-#  for the applicable languages (e.g. Finnish).
+#  These variables adjust the syntax of the period box
 
-#$last_text_order = "after";
+$last_text_order        = "before";
+$swap_last_and_interval = "no";
 
+###############################################################################
+#  Do not edit below here.                                                    # 
+###############################################################################
 
-##########################################################
-#  Location preface option 
-##########################################################
-#
-#  This affects all entries in the results listing pages.
-#
-#  To preface locations with a phrase of your choice
-#  assign to this variable whatever is appropriate for your
-#  library.  If you want locations to display *without*
-#  any explanatory preface, either comment out this line
-#  or assign it a null value ("").
+1;
 
-$location_preface      = "Placering: ";
-$location_temp_preface = "Temporär placering:";
-
-
-##########################################################
-#  Call number and web link preface options 
-##########################################################
-#
-#  These affect entries in the results listing pages.
-#
-#  To preface call numbers with a phrase of your choice
-#  assign to this variable whatever is appropriate for your
-#  library.  If you want call numbers to display *without*
-#  any explanatory preface, either comment out this line
-#  or assign it a null value ("").  Ditto for web link.
-
-$call_number_preface = "Hyllsignum: ";
-
-$web_link_preface = "Web Link: ";
-
-
-##########################################################
-#  The "other" tabs for the internal search form. 
-##########################################################
-#
-#  Note that the third tab can be turned off in the
-#  newbooks.ini file.
-
-$first_tab    = "Enkel sökning";
-$second_tab   = "Avancerad sökning";
-$third_tab    = "Course Reserves";
-
-#  If WebVoyage uses multiple languages, some or all of them require
-#  a name/value pair in the Pwebrecon query string.  A good example
-#  of this is Helka (http://helka.csc.fi). Here is where that value
-#  is supplied so that the "other" tab links go to the right
-#  language version of WebVoyage.  This also affects the ISBN/title
-#  canned links back to WebVoyage.
-
-#    $pwebrecon_link_language = "LANGUAGE=Swedish&";
-$pwebrecon_link_language = "";
-
-
-##########################################################
-#  Short keyword searching explanation 
-##########################################################
-#
-#  Appears below the table on the initial search form.
-
-$short_expl  = "";
-
-
-
-
-##########################################################
-#  Locations
-##########################################################
-#
-#  If you want the Swedish interface locations names to
-#  vary from the default that is set in newbooks.ini,
-#  then replace "XXXXXXX" with "Swedish".  Note that
-#  fragments match the actual location name as extracted
-#  from the Voyager database, so should be the same values
-#  as the fragments used in the newbooks.ini file.
-#
-#  See also: http://rocky.uta.edu/doran/autolist/faq.html#fragment
-
-#if ($language eq "XXXXXXX") {
-if ($language eq "Swedish") {
-   $all_locations_text = "Alla placeringar";
-   @locations = ("Central", "Centralbibliotek",
-		 "Archite", "Arkitektur &#38; Konst",
-		 "Science", "Ventenskap &#38; Ingenjör",
-		 "Special", "Specialsamlingarna",
-		 "Gov", "US Regeringen Publikationen",
-		 "Internet", "Ämnesresurser");
-}
-
-
-#  Swedish interface
-
-    # Form labels
-    $select_location_label  = "Välj Placering:";
-    $display_interval_label = "Tidsperiod:";
-    $sort_by_label          = "Sortera efter:";
-    $search_for_label       = "Sökord:";
-
-    # Mini-form labels
-    $miniform_location_label         = "Placering:";
-    $miniform_search_for_label       = "Sökord:";
-
-    # Sort categories
-    $sort_label_call_no     = "hyllsignum";
-    $sort_label_author      = "författare";
-    $sort_label_title       = "titel";
-
-    # Form buttons
-    $search_button          = "Sök";
-    $reset_button           = "Rensa";
-
-    # Form box text
-    $records_per_page       = "poster per sida";
-
-    #  Short Blurb appears on the right side of the search form. 
-    #  You'll likely have to experiment with line breaks.
-    #  (Alternately, you can insert a small graphic.)
-    $short_blurb            = "Nyförvärvade<br />poster.";
-
-    #  Results pages column headings
-    $column_heading_title   = "Titel";
-    $column_heading_author  = "Författare";
-
-    $results_search         = "Sök";
-    $results_term_type      = "fritext";
-    $results_sorted_by      = "sortering";
-    $results_of             = "av";
-    $results_items          = "poster";
-    $clear_selected_text    = "Ta bort markerade poster";
-    $retain_selected_text   = "Behåll markerade poster";
-    $back_to_top_text       = "Till sidans topp";
-
-    # Save results box text
-    $sb_save_title	    = "Spara sökresutat";
-    $sb_records  	    = "Poster";
-    $sb_all_onpage          = "Allt på sidan";
-    $sb_selected_onpage     = "Markerade på sidan";
-    $sb_selected_allpages   = "Alla markerade";
-    $sb_print_save_email    = "Utskrift/Spara/E-post";
-    $sb_print_button        = "Utskrift/Spara";
-    $sb_email_text          = "Ange e-postadress:";
-    $sb_email_button        = "E-posta poster";
-
-    # Misc. text
-    $err_no_results         = "Inga träffar";
-    $msg_email_sent         = "Meddelandet skickades.";
-    $msg_email_err          = "Meddelandet skickades inte.";
-    $msg_email_err_noaddr   = "Du angav ingen epost-adress, försök igen.";
-    $msg_email_err_faulty   = "Försök igen för att få assistans.";
-    $msg_email_err_prog     = "Fel på mail-server, v.g. kontakta webmaster.";
-
-    # Alt text for images
-    $img_alt_patron         = "Låneinformation";
-    $img_alt_help           = "Hjälp";
-    $img_alt_exit           = "Avsluta";
-    $img_alt_prev           = "Föregående";
-    $img_alt_next           = "Nästa";
+__END__
 
 #a-um    ä
 #A-um    Ä
 #a-circ  å
 #o-um    ö
-
-return 1;

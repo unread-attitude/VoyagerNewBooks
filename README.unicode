@@ -1,11 +1,11 @@
 New Books List
 
-Copyright 2000-2005, The University of Texas at Arlington 
+Copyright 2000-2010, The University of Texas at Arlington 
 
 Written by Michael Doran, doran@uta.edu
-UTA Libraries, Box 19497, Arlington, TX 76019, USA
+UT Arlington Library, Box 19497, Arlington, TX 76019, USA
 
-See also:  http://rocky.uta.edu/doran/autolist/
+See also:  http://rocky.uta.edu/doran/newbooks/
 
 |------------------------------------------------------------|
 |      Editing Unicode (UTF-8) encoded text files            |
@@ -25,7 +25,7 @@ valid UTF-8 characters.  The ASCII character repertoire:
                 ` a b c d e f g h i j k l m n o
                 p q r s t u v w x y z { | } ~
 
-If you edit a configuration file (e.g newbooks.ini) and only 
+If you edit a configuration file (e.g newBooks.ini) and only 
 use the ASCII character repertoire, you can use the text editor 
 of your choice and nothing special needs to be done.  Most 
 English-only sites will be in this category.
@@ -34,13 +34,15 @@ However, if the text you want to enter is a character outside
 the ASCII repertoire (e.g. a character with a diacritic), then 
 you must ensure that the character is encoded in UTF-8.  This 
 will likely impact multilingual sites that choose to customize 
-the language modules such as newbooks.Finnish.
+the language modules such as newBooks.Finnish.
  
 There are a variety of options for including non-ASCII characters 
 within a text file:
   1) Use a Unicode (UTF-8) aware authoring tool (text editor).
+     If you are doing your editing server-side via SSH, then a
+     character set configurable client (e.g. PuTTY) is recommended.
   2) Copy and paste properly encoded characters from another file
-     or from within the file.
+     or from within the file (results may vary).
   3) Use character references:
      o Numeric character references
        o decimal

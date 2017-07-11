@@ -1,317 +1,340 @@
 New Books List
 
-Copyright 2000-2005, The University of Texas at Arlington 
+Copyright 2000-2017, The University of Texas at Arlington 
+All rights reserved.  See included LICENSE for particulars.
 
 Written by Michael Doran, doran@uta.edu
-UTA Libraries, Box 19497, Arlington, TX 76019, USA
+  UT Arlington Library
+  University of Texas at Arlington
+  Box 19497, Arlington, TX 76019, USA
 
-See also:  http://rocky.uta.edu/doran/autolist/
+See also:  http://rocky.uta.edu/doran/newbooks/
 
-"Voyager" and "WebVoyage" are trademarks of Endeavor 
-Information Systems, Inc.
-
+"Voyager" and "WebVoyage" are trademarks of Ex Libris 
 
 |------------------------------------------------------------|
-|  Version 6.1.2 Unicode                                       |
+|  Version 7.3 for Tomcat WebVoyage                          |
 |------------------------------------------------------------|
-|  Unix Installation Instructions                            |
+|  UNIX Installation Instructions                            |
 |------------------------------------------------------------|
 
 
 Prerequisites
 -------------
 
-  Perl must be installed on servers where either newbooks.cgi
-  or newbooks.pl will run.  The Perl DBI and DBD::Oracle
-  modules must be installed on the server where newbooks.pl  
-  will run.  If you choose the FTP option in newbooks.pl, 
-  (not required) the Perl Net::FTP module must be installed. 
+  Perl (recommended minimum version is Perl 5.8)
+  Perl modules
+     newBooks.pl requires:
+         DBI
+         DBD::Oracle
+     newBooks.cgi requires:
+         Encode
+         LWP::UserAgent
+         Unicode::Normalize
+         Socket
 
-  Endeavor should have already installed Perl and the DBI/DBD 
-  modules on (at least) your Voyager database server.  Use
-  the "dope.sh" utility to determine what Perl versions
-  you have on your system.
-
-  This version of the New Books List requires that you have
-  the Voyager Unicode upgrade.
-  
+  You can run the included "prereqs.pl" script to test for the 
+  required prerequisites. 
 
 Installation scenarios
 ----------------------
 
-There are at least four installation scenarios:
-  1) Both the extraction program (newbooks.pl) and the
-     CGI program (newbooks.cgi) will reside on the same
+There are at least three installation scenarios:
+  1) Both the extraction program (newBooks.pl) and the
+     CGI program (newBooks.cgi) will reside on the same
      server.  This will be the case if your Voyager
      database server and WebVoyage server are one and
      the same. 
-  2) The extraction program (newbooks.pl) will reside on
+  2) The extraction program (newBooks.pl) will reside on
      the Voyager database server, and the CGI program
-     (newbooks.cgi) will reside on a separate WebVoyage
+     (newBooks.cgi) will reside on a separate WebVoyage
      server.  This case is typical for many Voyager sites.
-  3) Both the extraction program (newbooks.pl) and the
-     CGI program (newbooks.cgi) will reside on a WebVoyage
+  3) Both the extraction program (newBooks.pl) and the
+     CGI program (newBooks.cgi) will reside on a WebVoyage
      server that is _not_ also the Voyager database server.
-     This requires installation of the Perl DBI modules on
-     the WebVoyage server.  It also requires modifications
-     to the DBI connection code in newbooks.pl that are not
-     supported in this release.
-  4) Both the extraction program (newbooks.pl) and the
-     CGI program (newbooks.cgi) will reside on a non-Voyager
-     related server.  Like scenario 3, this requires the
-     installation of software and configuration changes that 
-     are not supported in this release.
+     This requires installation of the Perl DBI/DBD modules
+     on the WebVoyage server (which in turn, requires that
+     an Oracle client be installed).  It also requires
+     modifications to the DBI connection code in newBooks.pl
+     so that it can connect to a remote Oracle database
+     listener.
 
-     Scenarios 1 or 2 are recommended.  For scenario 3 or 4
-     see http://rocky.uta.edu/doran/autolist/faq.html#appserver 
+In these installation instructions:
+  {xxxdb} => replace this with your database name
+  {skin}  => replace this with the appropriate skin name (e.g. en_US)
 
 
-Installation steps 
-------------------
+====================
+Installing the files
+====================
 
-  Download newbooks-6.1.tar.gz to your server. 
+  The New Books List package is available at:
+	http://rocky.uta.edu/doran/newbooks/download.html
 
-  Unzip and untar the tarball:
+  Download newBooks-7.3.zip to your server. 
 
-	gzip -d -c newbooks-6.1.tar.gz | tar xvf -
+  Unzip:
 
-  Note: Using an unzip application *other* than gzip (e.g. WinZip) may
-	corrupt the Perl executable scripts.
+	unzip newBooks-7.3.zip
 
-  The newbooks-6.1.tar.gz tarball should contain the following files:
+  Note: The newBooks-7.3.zip file should be unzipped on the
+        Voyager server, not on your PC with WinZip. 
 
-	./newbooks-6.1/CHANGES
-	./newbooks-6.1/INSTALL
-	./newbooks-6.1/README.unicode
-	./newbooks-6.1/newbooks.pl
-	./newbooks-6.1/newbooks.cgi
-	./newbooks-6.1/newbooks.ini
-	./newbooks-6.1/newbooks.English
-	./newbooks-6.1/newbooks.Finnish
-	./newbooks-6.1/newbooks.Swedish
-	./newbooks-6.1/newbooks.Welsh
-	./newbooks-6.1/newbooks.Language
-	./newbooks-6.1/English.gif
-	./newbooks-6.1/English-alt.gif
-	./newbooks-6.1/Finnish.gif
-	./newbooks-6.1/Swedish.gif
-	./newbooks-6.1/Welsh.gif
-	./newbooks-6.1/newbooks.txt
-	./newbooks-6.1/dope.sh
+  The newBooks-7.3.zip package should contain the following files:
 
-	CHANGES (text file)
-	A document extolling all the wondrous new and improved
-	features in this version and previous versions.
+	./newBooks-7.3/CHANGES
+	./newBooks-7.3/gbsv-jquery.js
+	./newBooks-7.3/INSTALL
+	./newBooks-7.3/jquery-1.2.3.min.js
+	./newBooks-7.3/LICENSE
+	./newBooks-7.3/newBooks.cgi
+	./newBooks-7.3/newBooks.css
+	./newBooks-7.3/newBooks.Chinese
+	./newBooks-7.3/newBooks.English
+	./newBooks-7.3/newBooks.Finnish
+	./newBooks-7.3/newBooks.ini
+	./newBooks-7.3/newBooks.Language
+	./newBooks-7.3/newBooks.pl
+	./newBooks-7.3/newBooks.Swedish
+	./newBooks-7.3/newBooks.txt
+	./newBooks-7.3/newBooks.Welsh
+	./newBooks-7.3/one-transparent.gif
+	./newBooks-7.3/prereqs.pl
+	./newBooks-7.3/README.filenames
+	./newBooks-7.3/README.unicode
+	./newBooks-7.3/searchNewBooks.html
 
-	INSTALL (text file)
-	This file.
+  Create the following directories (these directories shouldn't already
+  exist unless there was a previous installation of New Books List 7.0):
 
-	README.unicode (text file)
-	A README file that provides guidance for editing text
-	files in a Unicode (UTF-8) environment.
+    cd /m1/voyager/{xxxdb}/tomcat/vwebv/context/vwebv/htdocs/
+    mkdir vwebv
 
-	newbooks.pl (executable program)
-	A Perl program that extracts "new books" data from
-	the Voyager database and outputs a newbooks.txt file. 
-
-	newbooks.cgi (executable program)
-	A CGI/Perl program that displays the initial New Books
-	search form, and then displays the results pages from
-	user searches.
-
-	newbooks.ini (configuration file)
-	This file contains configuration variables that are
-	used to customize the newbooks.cgi program.
-
-	newbooks.English/Finnish/Swedish/Welsh (language modules)
-	These files provide the language of the user interface.  
-	Only one language module is required, but all modules can 
-	be utilized if desired.  Note that language module files 
-	are also meant to be edited!
-
-	newbooks.Language (language module template)
-	This is a template for those who want to create their own
-	language module, in order to provide a user interface in a 
-	different language than those provided.
-
-	English.gif/Finnish.gif/Swedish.gif/Welsh.gif (flag image files)
-	English-alt.gif is an alternate "English" flag using
-	the US flag rather than the UK flag.
-
-	newbooks.txt (text file)
-	A tab delimited flat-file that you can use to test the 
-	functionality of newbooks.cgi.  You will be generating
-	your own site-specific newbooks.txt file when you
-	configure and run newbooks.pl.
-
-	dope.sh (shell script)
-	A utility designed to be run on the command line. It helps
-	determine how many instances of Perl are installed on your
-	system, what versions they are, and whether or not they
-	have the DBI and/or DBD::Oracle modules.
-
-  File ownerships and permissions
-
-	If the files don't untar with the correct ownerships 
-	and permissions, please make them look like this: 
-
-	-rwxr--r--   1 voyager  endeavor   ...	newbooks.pl
-	-rwxr-xr-x   1 voyager  endeavor   ...	newbooks.cgi
-	-rwxr-xr-x   1 voyager  endeavor   ...	newbooks.ini
-	-rwxr-xr-x   1 voyager  endeavor   ...	newbooks.English
-	-rwxr-xr-x   1 voyager  endeavor   ...	newbooks.Finnish
-	-rwxr-xr-x   1 voyager  endeavor   ...	newbooks.Swedish
-	-rwxr-xr-x   1 voyager  endeavor   ...	newbooks.Welsh
-	-rwxr-xr-x   1 voyager  endeavor   ...  newbooks.Language
-	-rw-r--r--   1 voyager  endeavor   ...  English.gif
-	-rw-r--r--   1 voyager  endeavor   ...  English-alt.gif
-	-rw-r--r--   1 voyager  endeavor   ...  Finnish.gif
-	-rw-r--r--   1 voyager  endeavor   ...  Swedish.gif
-	-rw-r--r--   1 voyager  endeavor   ...  Welsh.gif
-	-rw-r--r--   1 voyager  endeavor   ...	newbooks.txt
-	-rwxr--r--   1 voyager  endeavor   ...	dope.sh
-
-	Note: If the FTP option in newbooks.pl is selected, 
-	      use more strict permissions (700) for that file.
-
-	*RECHECK* file permissions and ownerships AFTER the
-	files are copied/moved to their installation directories.
-
+    cd /m1/voyager/{xxxdb}/tomcat/vwebv/context/vwebv 
+    mkdir newbooks
 
   Installation locations
 
-	Place the files in the following locations on the 
-	appropriate server(s).
+    Place the files in the following locations on the 
+    appropriate server(s).
 
-	WebVoyage server:
+    WebVoyage server:
+    =================
 
-	/m1/voyager/xxxdb/webvoyage/cgi-bin/newbooks.cgi
-	/m1/voyager/xxxdb/webvoyage/cgi-bin/newbooks.ini
-	/m1/voyager/xxxdb/webvoyage/cgi-bin/newbooks.English
-	/m1/voyager/xxxdb/webvoyage/cgi-bin/newbooks.Finnish
-	/m1/voyager/xxxdb/webvoyage/cgi-bin/newbooks.Swedish
-	/m1/voyager/xxxdb/webvoyage/cgi-bin/newbooks.Welsh
-	/m1/voyager/xxxdb/webvoyage/cgi-bin/newbooks.txt
+      Copy/move these files:
 
-	(for multilingual sites)
-	/m1/voyager/xxxdb/webvoyage/html/images/English.gif
-	/m1/voyager/xxxdb/webvoyage/html/images/Finnish.gif
-	/m1/voyager/xxxdb/webvoyage/html/images/Swedish.gif
-	/m1/voyager/xxxdb/webvoyage/html/images/Welsh.gif
+	newBooks.cgi
+	gbsv-jquery.js
+	jquery-1.2.3.min.js
+	one-transparent.gif
+        README.filenames
 
-	Voyager database server:
+      ...to this directory:
 
-	/m1/voyager/xxxdb/sbin/newbooks.pl
+        /m1/voyager/{xxxdb}/tomcat/vwebv/context/vwebv/htdocs/vwebv/
 
-	*RECHECK* file permissions and ownerships AFTER the
-	files are copied/moved to their installation directories.
+      Copy/move these files:
 
-	*RECHECK* file permissions and ownerships AFTER the
-	files are copied/moved to their installation directories.
+	newBooks.ini
+	newBooks.Chinese
+	newBooks.English
+	newBooks.Finnish
+	newBooks.Swedish
+	newBooks.Welsh
+	newBooks.Language
+        newBooks.txt
+	README.unicode
+
+      ...to this directory:
+
+        /m1/voyager/{xxxdb}/tomcat/vwebv/context/vwebv/newbooks/ 
+
+      Copy/move these files:
+
+	newBooks.css
+
+      ...to this directory:
+
+        /m1/voyager/{xxxdb}/tomcat/vwebv/context/vwebv/ui/{skin}/css/
+
+      Copy/move this file:
+
+        searchNewBooks.html
+
+      ...to this directory:
+
+        /m1/voyager/{xxxdb}/tomcat/vwebv/context/vwebv/ui/{skin}/htdocs/help/
+
+    Voyager database server:
+    ========================
+
+      Copy/move these files:
+
+	newBooks.pl
+
+      ...to this directory:
+
+	/m1/voyager/{xxxdb}/sbin/
+
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  !!!!!  IMPORTANT - File ownerships and permissions  !!!!!
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    After you copy/move the files into the appropriate directory,
+    make sure they have these ownerships and permissions.
+
+      Executables scripts (.cgi, .pl, .sh) should have these:
+	-rwxr-xr-x   1 voyager  exlibris   ...	{filename}
+
+      All other files should have these:
+	-rw-r--r--   1 voyager  exlibris   ...	{filename}
 
 
-Testing and configuration steps
--------------------------------
+====================
+Apache configuration
+====================
+
+  The Apache instance that runs the Tomcat-architected version of
+  WebVoyage that is new to Voyager 7.0 probably will NOT come pre-
+  configured to run CGI programs (WebVoyage is run by Tomcat).
+
+  Since the New Books List *is* a CGI program, it won't run until
+  Apache is properly configured.  This is not my fault... I'm just
+  the messenger here.
+
+  Bonus: This same configuration will enable you to execute an 
+  external patron authentication CGI script. ;-) 
+
+  The following steps will require root access.
+
+  Edit the appropriate Apache {xxxdb}_vwebv_httpd.conf file in
+  /m1/shared/apache2/conf/ActivatedVirtualHosts/
+
+  Add the following within the vwebv <VirtualHost *:{port}> section:
+
+        # Allow for execution of CGI scripts, such as:
+        #  - external patron authentication adaptor
+        #  - New Books List
+        #  - ShelfLister, etc. 
+        AddHandler cgi-script .cgi
+        <Directory "/m1/voyager/{xxxdb}/tomcat/vwebv/context/vwebv/htdocs">
+                Options MultiViews
+                AllowOverride None
+                Options ExecCGI
+                Order allow,deny
+                Allow from all
+        </Directory>
+
+  Restart Apache in order for the configuration change to take effect.
+
+  Note: A "ScriptAlias" directive is not a viable alternative for
+  the "AddHandler cgi-script .cgi" directive; the newBooks.cgi script
+  needs to run in the same 'virtual' URL path as the other vwebv 
+  WebVoyage executables.
+
+  If you think you shouldn't have to mess with Apache configuration in
+  order to enable the New Books List (or external patron authentication),
+  please let Ex Libris know.
+
+=========================
+Testing and configuration
+=========================
 
   1) Do a pre-configuration test:
 	Before you start configuring the programs, test to see
-	if newbooks.cgi works by pointing a web browser to:
-	  http://Your_WebVoyage.server.edu/cgi-bin/newbooks.cgi
+	if newBooks.cgi works by pointing a web browser to:
+	  http://YOUR_WebVoyage.server.edu{:port}/vwebv/newBooks.cgi
 	It should work "out of the box". (Albeit with the "test" 
 	new book data rather than your library's new book data.)
 	If it doesn't work, CHECK:
 	- FILE OWNERSHIPS AND PERMISSIONS
-	- that you have Perl installed (perl -v)
-	- that the top line of newbooks.cgi points to a valid 
+	- that the top line of newBooks.cgi points to a valid 
 	  Perl executable
-        - run the "dope.sh" utility to find out where Perl is:
-	   ./dope.sh
 	[Note: links back to the catalog will not work unless
 	 your library also owns the item in the test database.]
 	If the program works OK, go to step 2.
   2) Generate your own data:
-	Read the configuration comments in newbooks.pl and then edit 
+	Read the configuration comments in newBooks.pl and then edit 
 	the configurable parts so it will run on your system and
 	so that the desired options are specified.  
-	Run newbooks.pl (should take approx. 2 to 15+ minutes).
-	  ./newbooks.pl
+	Run newBooks.pl (should take approx. 2 to 15+ minutes).
+	  ./newBooks.pl
 	Debug and repeat as necessary (and re-read the comments!)
-	If you get an error message saying "Can't locate DBI.pm" 
-	or other DBI:Oracle errors, try changing the top line of 
-	the program to an alternate Perl path:
-		#!/usr/local/bin/perl -w
-	  or
-		#!/m1/shared/bin/perl -w
-          or
-		#!/usr/bin/perl -w
-	Run the "dope.sh" utility on the command line to determine
-	the appropriate paths on your system:
-		./dope.sh
 	Debug and repeat as necessary.
-	Once you have newbooks.pl working, make it a Voyager cron job
-        that runs once a day.  See the man pages for cron and crontab 
+	Once you have newBooks.pl working, make it a Voyager cron job
+	that runs once a day.  See the man pages for cron and crontab 
 	and/or consult your favorite Unix sysadmin book for more info.
 	(see: http://rocky.uta.edu/doran/scvugm2001/books.html)
-        Problems at this stage generally have to do with the transfer
-	of the newbooks.txt file rather than with the extraction of
+	Problems at this stage generally have to do with the transfer
+	of the newBooks.txt file rather than with the extraction of
 	data from your Voyager database.  If the program produces a
-	newbooks.txt file, then you know that that part of the program
+	newBooks.txt file, then you know that that part of the program
 	is working.  Configuration of your servers to allow for remote 
 	copy is something that I can provide some instructions for, but
 	I can't anticipate the many variables in a particular networking 
 	environment.  Read the comments in the transfer section of
-	newbooks.pl very carefully, and also read the man pages for
+	newBooks.pl very carefully, and also read the man pages for
 	the "rcp" command and the "rhosts" file. 
-  3) Customize newbooks.cgi by editing newbooks.ini:
-	Read the configuration comments in newbooks.ini and then edit
+  3) Customize newBooks.cgi by editing newBooks.ini:
+	Read the configuration comments in newBooks.ini and then edit
 	the configurable parts to customize for your library.  If you
-	chose months instead of weeks in newbooks.pl, you must choose
-	the same option in newbooks.ini.
-	Use your browser to test newbooks.cgi against your library's 
-	new books file (newbooks.txt) that you generated in step 2.
+	chose months instead of weeks in newBooks.pl, you must choose
+	the same option in newBooks.ini.
+	Use your browser to test newBooks.cgi against your library's 
+	new books file (newBooks.txt) that you generated in step 2.
 	Debug and repeat as necessary.
-	Be sure that you take the time to adjust the colors to match 
-	your library's WebVoyage look.  It only takes a few minutes
-	and makes a big difference.  :-)
-  4) Customize the appropriate language module(s) as needed or desired.
-	Note that this step applies to English-only sites, too!
-	You can change/edit any and all text that makes up the user
-	interface.  Examples include changing the tab text to match
-	the tabs in your Webvoyage search screens.  Please read the
-	README.unicode help file prior to editing language module files.
-	Multilingual sites should examine pathname values in the 
-	language modules for accuracy and may also want to refine the
-	translations.  It is also possible to add additional languages
-	using the language module template (newbooks.Language).
-  5) Add a "New Books" tab to all WebVoyage search screens:
-        This step requires that you edit the Tab_Text entry
-	in the Course_Reserve_Search_Page stanza of the 
-	/m1/voyager/xxxdb/etc/webvoyage/local/opac.ini file.
-	Replace this:
-		Tab_Text=Course Reserves
-	With this:
-		Tab_Text=Course Reserves</a> &nbsp; </font>&nbsp;
-		</th></tr></table></td><td>&nbsp;&nbsp;</td>
-		<td><table border="0" cellspacing="0" cellpadding="0">
-		<tr><th nowrap bgcolor="#8b8989">&nbsp;<font 
-		color="#ffffff">&nbsp; <a style="color:#ffffff" 
-		href="/cgi-bin/newbooks.cgi">New Books</a>
-        IMPORTANT NOTE: There shouldn't be any line breaks in the 
-	above code!  That means that all of the Tab_Text value should 
-	be one continuous line.  If you cut-and-paste, there will be
-	line breaks that have to be removed!  (In vi, use shift-J to
-	concatenate lines.)
-        You will also have to adjust font, background, and style 
-        colors to match your site's scheme.  If your site does not 
-	utilize the Course Reserves tab, then of course, you will be 
-	apply this to the right-most tab, using the corresponding 
-	stanza and making whatever adjustments are appropriate. 
-  6) I would really appreciate it, if once you make the New Books 
-	List available to your patrons, you would send me the URL so 
-	that I can add your institution to the User List.  This is 
-	the ONLY thing I ask for in return for using this program.
-	(see: http://rocky.uta.edu/doran/autolist/users.html) 
+  4) CUSTOMIZE THE APPROPRIATE LANGUAGE MODULE(s) (e.g. newBooks.English)
+        as needed or desired.  Note that this step applies to English-only 
+	sites, too!  You can change/edit any and all text that makes up 
+	the user interface.  Please read the README.unicode help file 
+	prior to editing language module files.  Multilingual sites may 
+	also want to (have to) refine the translations.  It is also 
+	possible to add additional languages using the language module 
+	template (newBooks.Language).
+  5) Add a New Books search tab:
+	When you are ready to go live, follow the instructions below for
+	adding a "New Books" search tab.
 
+
+===============================
+Adding a "New Books" search tab
+===============================
+
+  To add a "New Books" search tab to all WebVoyage search screens
+  requires editing three files.  All three files start at this path:
+  "/m1/voyager/{xxxdb}/tomcat/vwebv/context/vwebv/ui/{skin}/" 
+ 
+  Replace {skin} with, for example, en_US
+
+  File 1: "webvoyage.properties"
+
+    Add this:
+
+    # The values for these buttons SHOULD match variables in
+    # newBooks.English (or equivalent file for this skin)
+    # newbooks.button  => $this_service value
+    # newbooks.message => $page_title value
+    page.search.buttons.newbooks.button=New Books
+    page.search.buttons.newbooks.message=New Books Search
+
+  File 2: "internal.properties"
+
+    Add this:
+
+    page.search.buttons.newbooks.action=newBooks.cgi?sk={skin}
+
+    (Don't forget to replace {skin} with the actual skin name.)
+
+  File 3: "./xsl/userTextConfigs/pageProperties.xml"
+
+    Add the following to the "<searchTabDisplayOrder>" section:
+
+    <tab name="page.search.buttons.newbooks.button"/>
+
+
+=============
+Miscellaneous
+=============
 
 Free advice
 -----------
@@ -322,21 +345,10 @@ Free advice
 	it, you can always backtrack to a previous working copy.
 
 
-Mailing list
-------------
-
-	My intention is to eventually maintain a mailing list of 
-	contacts for libraries using these programs so that minor news 
-	regarding bug fixes, etc., can be sent out without spamming 
-	the voyager-l listserv.  While not required, I'd appreciate it 
-	if using libraries would provide the email address of a system 
-	administrator or other contact person. 
-
-
 Bug Reports
 -----------
 
-	Please report bugs or installation problems to:
+	Please report bugs to:
 
 	Michael Doran
 	email: doran@uta.edu
@@ -350,11 +362,8 @@ Support
 	I am a Systems Librarian with a full time job quite apart from 
 	creating, enhancing, documenting, distributing, and supporting 
 	the New Books List.  Please keep that in mind and thoroughly
-	read these installation instructions, the program comments, 
-	and the FAQs (http://rocky.uta.edu/doran/autolist/faq.html)
-	before contacting me for help.  Considerable effort has gone
-	into the documentation, and chances are good that the answer
-	to your question is contained there.  
+	read these installation instructions, and the program comments, 
+	before contacting me for help.
 
 	This is not meant to discourage you from contacting me,
 	particularly in regard to bugs or issues that may impact other 
@@ -363,11 +372,11 @@ Support
 	be made more clear or otherwise improved.
 
 	Server network configuration to allow for remote copy (rcp)
-	of the newbooks.txt file is a separate issue from whether
+	of the newBooks.txt file is a separate issue from whether
 	the newbooks programs are functioning as designed.  Since 
 	rcp configuration occurs in files that have nothing to do
 	with the newbooks programs, there are no code changes I can
-	make in the newbooks.pl program to magically make rcp work.
+	make in the newBooks.pl program to magically make rcp work.
 	I will only provide assistance for remote copy (rcp) problems
 	if you are willing to give me temporary access to your system. 
 

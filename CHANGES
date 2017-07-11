@@ -1,15 +1,62 @@
 New Books List
 
-Copyright 2000-2005, The University of Texas at Arlington
+Copyright 2000-2017, The University of Texas at Arlington
 
 Written by Michael Doran, doran@uta.edu
 UTA Libraries, Box 19497, Arlington, TX 76019, USA
 
-See also:  http://rocky.uta.edu/doran/autolist/
+See also:  http://rocky.uta.edu/doran/newbooks/
 
-"Voyager" and "WebVoyage" are trademarks of Endeavor 
-Information Systems, Inc.
+"Voyager" and "WebVoyage" are trademarks of Ex Libris
 
+|------------------------------------------------------------|
+| Version 7.3 CHANGES: Tweaks and fixes                      |
+|------------------------------------------------------------|
+
+The newBooks.cgi able to play nice in the Ex Libris cloud 
+environment, courtesy of code hacking by James Mitchell.
+
+Download package now a zip file rather than a gzipped tar file.
+
+Removed "dope.sh" troubleshooting script from package. 
+
+|------------------------------------------------------------|
+| Version 7.0 CHANGES: enhancements                          |
+|------------------------------------------------------------|
+
+Voyager 7.2 compatibility
+-------------------------
+Minor tweaks to work with Tomcat 7.2 changes.
+
+Voyager 7.0 compatibility
+-------------------------
+Integrates functionally into the Voyager 7.0 server-side 
+WebVoyage tomcat architecture.  Implements the look and feel 
+and functionality of the new WebVoyage user interface. 
+
+Book cover thumbnails
+---------------------
+Can enable Google or Syndetic Solutions book cover thumbnail
+images.  Thumbnail image is linked to the respective service.
+This enhancement is still in 'beta' development.
+
+Google-like keyword search
+--------------------------
+Words are automatically boolean ANDed.  Words in quotes are
+searched as a phrase.
+
+Unicode-aware keyword searching 
+-----------------------------
+Search terms containing UTF-8 encoded diacritics are handled
+correctly.
+
+Keyword search truncation
+-------------------------
+Ending truncation with an * or a ?.
+
+Search term highlighting
+------------------------
+Search terms are highlighted in the results pages.
 
 
 |------------------------------------------------------------|
