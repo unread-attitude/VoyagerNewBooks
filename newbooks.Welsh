@@ -1,0 +1,298 @@
+########################################################################
+#
+#  newbooks.Welsh : a New Books List language module
+#
+#  Version: 6.1 Unicode
+#
+#  Created by Michael Doran, doran@uta.edu
+#    Translations done by the translations division at
+#    the University of Wales Aberystwyth
+#
+#  University of Texas at Arlington Libraries
+#  Box 19497, Arlington, TX 76019, USA
+#
+#  More information at: http://rocky.uta.edu/doran/autolist/
+#
+########################################################################
+#
+#  Copyright 2000-2005, The University of Texas at Arlington ("UTA").
+#  All rights reserved.
+#
+#  By using this software the USER indicates that he or she 
+#  has read, understood and and will comply with the following:
+#
+#  UTA hereby grants USER permission to use, copy, modify, and
+#  distribute this software and its documentation for any 
+#  purpose and without fee, provided that:
+#
+#  1. the above copyright notice appears in all copies of the
+#  software and its documentation, or portions thereof, and
+#
+#  2. a full copy of this notice is included with the software 
+#  and its documentation, or portions thereof, and
+#
+#  3. neither the software nor its documentation, nor portions
+#  thereof, is sold for profit.  Any commercial sale or license
+#  of this software, copies of the software, its associated
+#  documentation and/or modifications of either is strictly
+#  prohibited without the prior consent of UTA.
+#
+#  Title to copyright to this software and its associated
+#  documentation shall at all times remain with UTA.  No right
+#  is granted to use in advertising, publicity or otherwise any
+#  trademark, service mark, or the name of UTA.
+#
+#  This software and any associated documentation are provided
+#  "as is," and UTA MAKES NO REPRESENTATIONS OR WARRANTIES,
+#  EXPRESSED OR IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR
+#  FITNESS FOR A PARTICULAR PURPOSE, OR THAT USE OF THE SOFTWARE,
+#  MODIFICATIONS, OR ASSOCIATED DOCUMENTATION WILL NOT INFRINGE
+#  ANY PATENTS, COPYRIGHTS, TRADEMARKS OR OTHER INTELLECTUAL
+#  PROPERTY RIGHTS OF A THIRD PARTY. UTA, The University of Texas
+#  System, its Regents, officers, and employees shall not be
+#  liable under any circumstances for any direct, indirect, special,
+#  incidental, or consequential damages with respect to any claim
+#  by USER or any third party on account of or arising from the
+#  use, or inability to use, this software or its associated
+#  documentation, even if UTA has been advised of the possibility
+#  of those damages.
+#
+#  Submit commercialization requests to: The University of Texas
+#  at Arlington, Office of Grant and Contract Services, 701 South
+#  Nedderman Drive, Box 19145, Arlington, Texas 76019-0145,
+#  ATTN: Director of Technology Transfer.
+#
+########################################################################
+#
+#  "Voyager" and "WebVoyage" are trademarks of Endeavor Information
+#  Systems, Inc.
+#
+########################################################################
+
+
+##########################################################
+#  WebVoyage multilingual image files
+##########################################################
+#
+#  Image files are commonly segregated according to language
+#  by subdirectory within the WebVoyage image directory.
+#  For example:
+#       /m1/voyager/xxxdb/webvoyage/html/images/English
+#       /m1/voyager/xxxdb/webvoyage/html/images/Finnish
+#       /m1/voyager/xxxdb/webvoyage/html/images/Swedish
+
+#  If your WebVoyage setup uses a separate subdirectory for
+#  this language images, then supply that information here.
+
+$image_subdir = "/Welsh";
+
+
+##########################################################
+#  What your service is called. 
+##########################################################
+#
+#  This goes in the "New Books" search tab, etc.
+
+$this_service = "Llyfrau Newydd";
+
+#  Page title
+
+$page_title = "$this_service";
+
+
+##########################################################
+#  Intervals of weeks or months 
+##########################################################
+#
+#  This value is set in newbooks.ini.
+
+if ($interval eq "month") {
+    $interval = "mis";
+    $interval_plural = "mis";
+} else {
+    $interval = "wythnos";
+    $interval_plural = "wythnos";
+}
+
+#  This goes in the period box of the form
+
+$last_text = "diwethaf";
+
+#  This determines word order for where $last_text appears,
+#  (in relation to the week or month number).  It is assumed
+#  to be "before" and this only needs to be uncommented
+#  for the applicable languages (e.g. Finnish).
+
+$last_text_order = "after";
+
+#  For some languages (e.g. Welsh) the word order for the 
+#  interval and "last text" has to be reversed from the
+#  default.  This variable accomplishes that.
+
+$swap_last_and_interval = "yes";
+
+
+##########################################################
+#  Location preface option 
+##########################################################
+#
+#  This affects all entries in the results listing pages.
+#
+#  To preface locations with a phrase of your choice
+#  assign to this variable whatever is appropriate for your
+#  library.  If you want locations to display *without*
+#  any explanatory preface, either comment out this line
+#  or assign it a null value ("").
+
+$location_preface      = "Lleoliad: ";
+$location_temp_preface = "Dros dro yn";
+
+
+##########################################################
+#  Call number and web link preface options 
+##########################################################
+#
+#  These affect entries in the results listing pages.
+#
+#  To preface call numbers with a phrase of your choice
+#  assign to this variable whatever is appropriate for your
+#  library.  If you want call numbers to display *without*
+#  any explanatory preface, either comment out this line
+#  or assign it a null value ("").  Ditto for web link.
+
+$call_number_preface = "Rhif Dosbarth: ";
+
+$web_link_preface = "Cyswllt gwe: ";
+
+
+##########################################################
+#  The "other" tabs for the internal search form. 
+##########################################################
+#
+#  Note that the third tab can be turned off in the
+#  newbooks.ini file.
+
+$first_tab    = "Chwiliad Syml";
+$second_tab   = "Chwiliad Manwl";
+$third_tab    = "Rhestrau Darllen";
+
+#  If WebVoyage uses multiple languages, some or all of them require
+#  a name/value pair in the Pwebrecon query string.  A good example
+#  of this is Helka (http://helka.csc.fi). Here is where that value
+#  is supplied so that the "other" tab links go to the right
+#  language version of WebVoyage.  This also affects the ISBN/title
+#  canned links back to WebVoyage.
+
+$pwebrecon_link_language = "LANGUAGE=Welsh&";
+#$pwebrecon_link_language = "";
+
+
+##########################################################
+#  Short keyword searching explanation 
+##########################################################
+#
+#  Appears below the table on the initial search form.
+
+$short_expl  = "Chwilio yn ôl gair teitl (e.e. Ceredigion), enw'r awdur (e.e. Sagan), neu ddechrau'r rhif (e.e. QC).";
+
+
+
+
+##########################################################
+#  Locations
+##########################################################
+#
+#  If you want this language's interface locations names to
+#  vary from the default that is set in newbooks.ini,
+#  then replace "XXXXXXX" with "Language".  Note that
+#  fragments match the actual location name as extracted
+#  from the Voyager database, so should be the same values
+#  as the fragments used in the newbooks.ini file.
+#
+#  See also: http://rocky.uta.edu/doran/autolist/faq.html#fragment
+
+if ($language eq "XXXXXXX") {
+   $all_locations_text = "";
+   @locations = ("", "",
+		 "", "",
+		 "", "",
+		 "", "",
+		 "", "",
+		 "", "");
+}
+
+
+#  Language interface
+
+    # Form labels
+    $select_location_label  = "Dewis lleoliad:";
+    $display_interval_label = "Cyfnod:";
+    $sort_by_label          = "Didol yn ôl:";
+    $search_for_label       = "Chwilio am: (dewisol)";
+
+    # Mini-form labels
+    $miniform_location_label         = "Lleoliad:";
+    $miniform_search_for_label       = "Chwiliad am:";
+
+    # Sort categories
+    $sort_label_call_no     = "rhif dosbarth";
+    $sort_label_author      = "awdur";
+    $sort_label_title       = "teitl";
+
+    # Form buttons
+    $search_button          = "Chwilio";
+    $reset_button           = "Ailosod";
+
+    # Form box text
+    $records_per_page       = "cofnodion fesul tudalen";
+
+    #  Short Blurb appears on the right side of the search form. 
+    #  You'll likely have to experiment with line breaks.
+    #  (Alternately, you can insert a small graphic.)
+    $short_blurb            = "Rhestr o lyfrau, <br />fideos, ac ati, newydd.";
+
+    #  Results pages column headings
+    $column_heading_title   = "Teitl";
+    $column_heading_author  = "Awdur";
+
+    $results_search         = "Chwilio";
+    $results_term_type      = "allweddair";
+    $results_sorted_by      = "didolwyd yn ôl";
+    $results_of             = "o";
+    $results_items          = "eitemau";
+    $clear_selected_text    = "Cliriwch y dewis";
+    $retain_selected_text   = "Cadwch y dewis";
+    $back_to_top_text       = "Nôl i'r brig";
+
+    # Save results box text
+    $sb_save_title	    = "Cadw'r dewisiadau";
+    $sb_records  	    = "Cofnodion";
+    $sb_all_onpage          = "Popeth ar y dudalen";
+    $sb_selected_onpage     = "Y dewis ar y dudalen";
+    $sb_selected_allpages   = "Y dewis ar bob dudalen";
+    $sb_print_save_email    = "Argraffu/Cadw neu ebostio";
+    $sb_print_button        = "Llwytho i lawr neu argraffu";
+    $sb_email_text          = "Rhowch y cyfeiriad ebost:";
+    $sb_email_button        = "Ebostiwch y Cofnodion";
+
+    # Misc. text
+    $err_no_results         = "dim canlyniadau";
+    $msg_email_sent         = "Anfonwyd eich Ebost.";
+    $msg_email_err          = "Methodd eich cais Ebost.";
+    $msg_email_err_noaddr   = "Rydych wedi anghofio'r cyfeiriad ebost, triwch eto.";
+    $msg_email_err_faulty   = "Ailgyflwynwch eich cais neu gofynnwch am gymorth.";
+    $msg_email_err_prog     = "Camgymeriad yn rhaglen bost y gwasanaethydd; rhowch wybod i'r gwefeistr.";
+
+    # Alt text for images
+    $img_alt_patron         = "Gwybodaeth amdanoch";
+    $img_alt_help           = "Cymorth";
+    $img_alt_exit           = "Exit";
+    $img_alt_prev           = "Tudalen flaenorol o gofnodion";
+    $img_alt_next           = "Tudalen nesaf o gofnodion";
+
+#a-um    ä
+#A-um    Ä
+#a-circ  å
+#o-um    ö
+
+return 1;

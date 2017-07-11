@@ -1,0 +1,55 @@
+New Books List
+
+Copyright 2000-2005, The University of Texas at Arlington 
+
+Written by Michael Doran, doran@uta.edu
+UTA Libraries, Box 19497, Arlington, TX 76019, USA
+
+See also:  http://rocky.uta.edu/doran/autolist/
+
+|------------------------------------------------------------|
+|      Editing Unicode (UTF-8) encoded text files            |
+|------------------------------------------------------------|
+
+The files included in the New Books List version 6.0 and higher 
+are encoded in Unicode (UTF-8).  Under certain circumstances, 
+this will have significance when it comes to editing the files.    
+
+One of the benefits of UTF-8 is that ASCII characters are also 
+valid UTF-8 characters.  The ASCII character repertoire:
+
+                  ! " # $ % & ' ( ) * + , - . /
+                0 1 2 3 4 5 6 7 8 9 : ; < = > ?
+                @ A B C D E F G H I J K L M N O
+                P Q R S T U V W X Y Z [ \ ] ^ _
+                ` a b c d e f g h i j k l m n o
+                p q r s t u v w x y z { | } ~
+
+If you edit a configuration file (e.g newbooks.ini) and only 
+use the ASCII character repertoire, you can use the text editor 
+of your choice and nothing special needs to be done.  Most 
+English-only sites will be in this category.
+
+However, if the text you want to enter is a character outside 
+the ASCII repertoire (e.g. a character with a diacritic), then 
+you must ensure that the character is encoded in UTF-8.  This 
+will likely impact multilingual sites that choose to customize 
+the language modules such as newbooks.Finnish.
+ 
+There are a variety of options for including non-ASCII characters 
+within a text file:
+  1) Use a Unicode (UTF-8) aware authoring tool (text editor).
+  2) Copy and paste properly encoded characters from another file
+     or from within the file.
+  3) Use character references:
+     o Numeric character references
+       o decimal
+       o hexadecimal
+     o Character entity references
+
+The "character references" method is designed to be used for 
+text that will be displayed via a web browser.  For more 
+information on using character references, see that section
+in the W3C HTML 4.01 Specification:
+  http://www.w3.org/TR/html4/charset.html#h-5.3 
+

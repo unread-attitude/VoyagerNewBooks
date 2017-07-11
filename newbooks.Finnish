@@ -1,0 +1,295 @@
+########################################################################
+#
+#  newbooks.Finnish : a New Books List language module
+#
+#  Version: 6.1 Unicode
+#
+#  Created by Michael Doran, doran@uta.edu
+#  Translation contributions from:
+#	Raimo Korkko, Oulu University
+#	Satu Ilva, Turku University
+#	Eila Montonen, Mikkeli Polytechnic
+#	Harri Kalinen, Joensuu University
+#
+#  University of Texas at Arlington Libraries
+#  Box 19497, Arlington, TX 76019, USA
+#
+#  More information at: http://rocky.uta.edu/doran/autolist/
+#
+########################################################################
+#
+#  Copyright 2000-2005, The University of Texas at Arlington ("UTA").
+#  All rights reserved.
+#
+#  By using this software the USER indicates that he or she 
+#  has read, understood and and will comply with the following:
+#
+#  UTA hereby grants USER permission to use, copy, modify, and
+#  distribute this software and its documentation for any 
+#  purpose and without fee, provided that:
+#
+#  1. the above copyright notice appears in all copies of the
+#  software and its documentation, or portions thereof, and
+#
+#  2. a full copy of this notice is included with the software 
+#  and its documentation, or portions thereof, and
+#
+#  3. neither the software nor its documentation, nor portions
+#  thereof, is sold for profit.  Any commercial sale or license
+#  of this software, copies of the software, its associated
+#  documentation and/or modifications of either is strictly
+#  prohibited without the prior consent of UTA.
+#
+#  Title to copyright to this software and its associated
+#  documentation shall at all times remain with UTA.  No right
+#  is granted to use in advertising, publicity or otherwise any
+#  trademark, service mark, or the name of UTA.
+#
+#  This software and any associated documentation are provided
+#  "as is," and UTA MAKES NO REPRESENTATIONS OR WARRANTIES,
+#  EXPRESSED OR IMPLIED, INCLUDING THOSE OF MERCHANTABILITY OR
+#  FITNESS FOR A PARTICULAR PURPOSE, OR THAT USE OF THE SOFTWARE,
+#  MODIFICATIONS, OR ASSOCIATED DOCUMENTATION WILL NOT INFRINGE
+#  ANY PATENTS, COPYRIGHTS, TRADEMARKS OR OTHER INTELLECTUAL
+#  PROPERTY RIGHTS OF A THIRD PARTY. UTA, The University of Texas
+#  System, its Regents, officers, and employees shall not be
+#  liable under any circumstances for any direct, indirect, special,
+#  incidental, or consequential damages with respect to any claim
+#  by USER or any third party on account of or arising from the
+#  use, or inability to use, this software or its associated
+#  documentation, even if UTA has been advised of the possibility
+#  of those damages.
+#
+#  Submit commercialization requests to: The University of Texas
+#  at Arlington, Office of Grant and Contract Services, 701 South
+#  Nedderman Drive, Box 19145, Arlington, Texas 76019-0145,
+#  ATTN: Director of Technology Transfer.
+#
+########################################################################
+#
+#  "Voyager" and "WebVoyage" are trademarks of Endeavor Information
+#  Systems, Inc.
+#
+########################################################################
+
+
+##########################################################
+#  WebVoyage multilingual image files
+##########################################################
+#
+#  Image files are commonly segregated according to language
+#  by subdirectory within the WebVoyage image directory.
+#  For example:
+#       /m1/voyager/xxxdb/webvoyage/html/images/English
+#       /m1/voyager/xxxdb/webvoyage/html/images/Finnish
+#       /m1/voyager/xxxdb/webvoyage/html/images/Swedish
+
+#  If your WebVoyage setup uses a separate subdirectory for
+#  Finnish language images, then supply that information here. 
+
+$image_subdir = "/Finnish";
+
+
+##########################################################
+#  What your service is called. 
+##########################################################
+#
+#  This goes in the "New Books" search tab, etc.
+
+$this_service = "Uutuusluettelo";
+
+#  Page title
+
+$page_title = "$this_service";
+
+
+##########################################################
+#  Intervals of weeks or months 
+##########################################################
+#
+#  This value is set in newbooks.ini.
+
+if ($interval eq "month") {
+    $interval = "kuukausi";
+    $interval_plural = "kuukausi";
+} else {
+    $interval = "viikolta";
+    $interval_plural = "viikolta";
+} 
+
+#  This goes in the period box of the form
+
+$last_text       = "viime";
+
+#  This determines word order for where $last_text appears,
+#  (in relation to the week or month number).  It is assumed
+#  to be "before" and this only needs to be uncommented
+#  for the applicable languages (e.g. Finnish).
+
+$last_text_order = "after";
+
+
+##########################################################
+#  Location preface option 
+##########################################################
+#
+#  This affects all entries in the results listing pages.
+#
+#  To preface locations with a phrase of your choice
+#  assign to this variable whatever is appropriate for your
+#  library.  If you want locations to display *without*
+#  any explanatory preface, either comment out this line
+#  or assign it a null value ("").
+
+$location_preface      = "Kokoelma: ";
+$location_temp_preface = "Väliaikainen kokoelma:";
+
+
+##########################################################
+#  Call number and web link preface options 
+##########################################################
+#
+#  These affect entries in the results listing pages.
+#
+#  To preface call numbers with a phrase of your choice
+#  assign to this variable whatever is appropriate for your
+#  library.  If you want call numbers to display *without*
+#  any explanatory preface, either comment out this line
+#  or assign it a null value ("").  Ditto for web link.
+
+$call_number_preface = "Sijainti: ";
+
+$web_link_preface = "Web Link: ";
+
+
+##########################################################
+#  The "other" tabs for the internal search form. 
+##########################################################
+#
+#  Note that the third tab can be turned off in the
+#  newbooks.ini file.
+
+$first_tab    = "Perushaku";
+$second_tab   = "Tarkennettu haku";
+$third_tab    = "Course Reserves";
+
+#  If WebVoyage uses multiple languages, some or all of them require
+#  a name/value pair in the Pwebrecon query string.  A good example
+#  of this is Helka (http://helka.csc.fi). Here is where that value
+#  is supplied so that the "other" tab links go to the right
+#  language version of WebVoyage.  This also affects the ISBN/title
+#  canned links back to WebVoyage.
+
+#$pwebrecon_link_language = "LANGUAGE=Finnish&";
+$pwebrecon_link_language = "";
+
+
+##########################################################
+#  Short keyword searching explanation 
+##########################################################
+#
+#  Appears below the table on the initial search form.
+
+$short_expl  = "";
+
+
+
+
+##########################################################
+#  Locations
+##########################################################
+#
+#  If you want the Finnish interface locations names to
+#  vary from the default that is set in newbooks.ini,
+#  then replace "XXXXXXX" with "Finnish".  Note that 
+#  fragments match the actual location name as extracted
+#  from the Voyager database, so should be the same values 
+#  as the fragments used in the newbooks.ini file. 
+# 
+#  See also: http://rocky.uta.edu/doran/autolist/faq.html#fragment
+
+if ($language eq "XXXXXXX") {
+   $all_locations_text = "Kaikki kokoelmat";
+   @locations = ("Central", "Pääkirjasto",
+		 "Archite", "Arkkitehtuuri &#38; Taide",
+		 "Science", "Tiede &#38; Tekniikka",
+		 "Special", "Erikoiskokoelmat",
+		 "Gov", "US Kuvernementti Publikationer",
+		 "Internet", "Internet Resources");
+}
+
+
+#  Finnish interface
+
+    # Form labels
+    $select_location_label  = "Valitse kokoelma:";
+    $display_interval_label = "Ajanjakso:";
+    $sort_by_label          = "Lajittelu:";
+    $search_for_label       = "Vapaasanahaku (katkaisu=?):";
+
+    # Mini-form labels
+    $miniform_location_label         = "Kokoelma:";
+    $miniform_search_for_label       = "Vapaasanahaku:";
+
+    # Sort categories
+    $sort_label_call_no     = "sijainti";
+    $sort_label_author      = "tekijä";
+    $sort_label_title       = "nimeke";
+
+    # Form buttons
+    $search_button          = "Hae";
+    $reset_button           = "Tyhjennä";
+
+    # Form box text
+    $records_per_page       = "viitettä/sivu";
+
+    #  Short Blurb appears on the right side of the search form. 
+    #  You'll likely have to experiment with line breaks.
+    #  (Alternately, you can insert a small graphic.)
+    $short_blurb            = "Uusien kirjojen,<br />videoiden<br />ym luettelo.";
+
+    #  Results pages column headings
+    $column_heading_title   = "Nimeke";
+    $column_heading_author  = "Tekijä";
+
+    $results_search         = "Haku";
+    $results_term_type      = "sanahaku";
+    $results_sorted_by      = "lajitteluperuste";
+    $results_of             = "(yhteensä";
+    $results_items          = ")";
+    $clear_selected_text    = "Tyhjennä valinnat";
+    $retain_selected_text   = "Säilytä valinnat";
+    $back_to_top_text       = "Sivun alkuun";
+
+    # Save results box text
+    $sb_save_title	    = "Tulosta/Tallenna/Lähetä sähköpostina";
+    $sb_records  	    = "Viitteet";
+    $sb_all_onpage          = "Tämä sivu";
+    $sb_selected_onpage     = "Valitut/tämä sivu";
+    $sb_selected_allpages   = "Valitut/kaikki sivut";
+    $sb_print_save_email    = "Tulosta/Tallenna/L\344het\344 s\344hk\366postina";
+    $sb_print_button        = "Tulosta/Tallenna";
+    $sb_email_text          = "S\344hk\366postiosoite:";
+    $sb_email_button        = "E-mail";
+
+    # Misc. text
+    $err_no_results         = "ei lopputulos";
+    $msg_email_sent         = "Lähetys onnistui.";
+    $msg_email_err          = "Lähetys epäonnistunut.";
+    $msg_email_err_noaddr   = "You forgot to enter your email address, please try again.";
+    $msg_email_err_faulty   = "Retry your request or ask for assistance.";
+    $msg_email_err_prog     = "Server mail program error, please notify webmaster.";
+
+    # Alt text for images
+    $img_alt_patron         = "asiakastiedot";
+    $img_alt_help           = "opastus";
+    $img_alt_exit           = "lopetus";
+    $img_alt_prev           = "edellinen";
+    $img_alt_next           = "seuraava";
+
+#a-um    ä
+#A-um    Ä
+#a-circ  å
+#o-um    ö
+
+return 1;
