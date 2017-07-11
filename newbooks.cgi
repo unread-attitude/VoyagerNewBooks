@@ -667,28 +667,20 @@ sub MailAck {
 
 sub ListIt {
     my ($rlEntry) = @_;
+    my ($bib_id, $author, $title, $edition, $imprint, $location,
+        $location_temp, $dispcallno, $callno, $bib_format, $isbn) = (@$rlEntry);
     #  0 $bib_id
-    my $bib_id        = $rlEntry->[0];
     #  1 $author
-    my $author        = $rlEntry->[1];
     #  2 $title
-    my $title         = $rlEntry->[2];
     #  3 $edition
-    my $edition       = $rlEntry->[3];
     #  4 $imprint
-    my $imprint       = $rlEntry->[4];
     #  5 $location
-    my $location      = $rlEntry->[5];
     #  6 $location_temp
-    my $location_temp = $rlEntry->[6];
     #  7 $dispcallno
-    my $dispcallno    = $rlEntry->[7];
     #  8 $callno
-    my $callno        = $rlEntry->[8];
     #  9 $bib_format
-    my $bib_format    = $rlEntry->[9];
     # 10 $isbn
-    my $isbn          = $rlEntry->[10];
+
     if ($total_count >= $starting_pnt && $display_count <= $ending_pnt) {
         if ( !$search_term  ) {
             SaveForHTML($rlEntry);
@@ -1152,9 +1144,9 @@ sub PrintNav {
 
 sub PopulateIndex {
     my ($sort_criteria, $bib_id, $author, $title, $edition, $imprint, $location, $location_temp, $dispcallno, $callno, $bib_format, $isbn) = @_;
-#    no strict 'refs';
     # Create an anonymous array for each entry
     my $rlEntry = [$bib_id, $author, $title, $edition, $imprint, $location, $location_temp, $dispcallno, $callno, $bib_format, $isbn];
+
     # Add to the index
     my $sort_element;
     if ($sort_criteria eq 'title') {
@@ -1180,28 +1172,21 @@ sub PopulateIndex {
 
 sub SaveForHTML {
     my ($rlEntry) = @_;
+
+    my ($bib_id, $author, $title, $edition, $imprint, $location,
+        $location_temp, $dispcallno, $callno, $bib_format, $isbn) = (@$rlEntry);
     #  0 $bib_id
-    my $bib_id        = $rlEntry->[0];
     #  1 $author
-    my $author        = $rlEntry->[1];
     #  2 $title
-    my $title         = $rlEntry->[2];
     #  3 $edition
-    my $edition       = $rlEntry->[3];
     #  4 $imprint
-    my $imprint       = $rlEntry->[4];
     #  5 $location
-    my $location      = $rlEntry->[5];
     #  6 $location_temp
-    my $location_temp = $rlEntry->[6];
     #  7 $dispcallno
-    my $dispcallno    = $rlEntry->[7];
     #  8 $callno
-    my $callno        = $rlEntry->[8];
     #  9 $bib_format
-    my $bib_format    = $rlEntry->[9];
     # 10 $isbn
-    my $isbn          = $rlEntry->[10];
+
     my $thumbnail_html = '';
     if ($isbn) {
         if ($NewBooksIni::thumbnails eq "g") {
@@ -1725,28 +1710,27 @@ sub SearchFormHTML {
 sub GrabInc {
     my ($inc_file) = @_;
     my $file_contents = '';
-    open (INCLUDE, "$inc_file")  || warn "Can't open file.\n";
-    while (<INCLUDE>) {
-        $file_contents = $file_contents . $_ ;
+    if (! open (INCLUDE, "$inc_file")) {
+       ErrorOutput('warn', "Failed to load $inc_file: $!");
+       return '';
     }
-    return($file_contents);
+    while (<INCLUDE>) {
+        $file_contents .= $_ ;
+    }
     close (INCLUDE);
+    return($file_contents);
 }
 
 sub ErrorOutput {
     my ($type, $error_message) = @_;
-    $error_out_count++;
+    print STDERR $error_message."\n";
+
     if ($ENV{'SERVER_PROTOCOL'} =~ /http/i ) {
-        if ($error_out_count < 2) {
-            print "Content-Type: text/html\n\n";
-        }
+        print "Content-Type: text/html\n\n" unless $error_out_count > 0;
         print "<h2>$error_message</h2>";
-    } else {
-        print "$error_message" . "\n";
     }
-    if ($type =~ /fatal/i) {
-      exit(2);
-    }
+    exit(2) if ($type =~ /fatal/i);
+    $error_out_count++;
 }
 
 exit(0);

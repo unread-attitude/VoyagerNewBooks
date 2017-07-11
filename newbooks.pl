@@ -50,8 +50,8 @@ use DBI;
 #  "env" command while logged in to your database server
 #  as the 'voyager' user.
 
-$ENV{ORACLE_SID} = "VGER";
-$ENV{ORACLE_HOME} = "/oracle/app/oracle/product/10.2.0/db_1";
+$ENV{ORACLE_SID} = "VGER" unless exists($ENV{ORACLE_SID}) && defined($ENV{ORACLE_SID});
+$ENV{ORACLE_HOME} = "/oracle/app/oracle/product/12.1.0.2/db_1" unless exists($ENV{ORACLE_HOME}) && defined($ENV{ORACLE_HOME});
 
 #  Database name
 #  Substitute your database in place of xxxdb.
