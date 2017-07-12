@@ -10,6 +10,18 @@ See also:  http://rocky.uta.edu/doran/newbooks/
 "Voyager" and "WebVoyage" are trademarks of Ex Libris
 
 |------------------------------------------------------------|
+| Version 7.4 CHANGES: SSL WebVoyage fix                     |
+|------------------------------------------------------------|
+
+Method for detecting http vs https was broken.  Use more robust
+methods.
+
+Fix error reporting when unable to connect to WebVoyage so that
+the output is valid CGI output.
+
+Formatting cleanups to improve legibility.
+
+|------------------------------------------------------------|
 | Version 7.3 CHANGES: Tweaks and fixes                      |
 |------------------------------------------------------------|
 

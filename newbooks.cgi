@@ -2,7 +2,7 @@
 
 ###############################################################################
 #                                                                             #
-#  New Books List, Version 7.3 for Unix                                       #
+#  New Books List, Version 7.4 for Unix                                       #
 #                                                                             #
 #  newBooks.cgi for 'vwebv' version of WebVoyage                              #
 #                                                                             #
@@ -21,6 +21,14 @@
 #  All rights reserved.  See included LICENSE for particulars.                #
 #                                                                             #
 ###############################################################################
+
+# For SSL connections - the address we connect to won't necessarily
+# match the address on the certificate
+BEGIN {
+     # LWP 6 is keep us safe, but we can be adequately confident
+     #  that we're talking to ourself.
+     $ENV{'PERL_LWP_SSL_VERIFY_HOSTNAME'} = 0;
+};
 
 use strict;
 use Encode;
@@ -201,25 +209,33 @@ sub LoadLangModule {
 sub GetBaseURL {
     my $base_URL = '';
     my $opts = undef;
-    if ($ENV{'SERVER_PROTOCOL'} && $ENV{'HTTP_HOST'}) {
-        my $http_protocol =  $ENV{'SERVER_PROTOCOL'}; 
-        $http_protocol    =~ s#(https*)/.*#$1#i;
+    ErrorOutput('fatal', "\nRunning $0 from the command line?\n") unless exists($ENV{'HTTP_HOST'}) && exists($ENV{'SCRIPT_URI'});
+
+    if (exists($ENV{'SERVER_ADDR'}) && $ENV{'SERVER_ADDR'} =~ /\S/ && exists($ENV{'SERVER_PORT'}) && $ENV{'SERVER_PORT'} =~ /^\d+$/) {
+        my $dest_addr_p = gethostbyname($ENV{'HTTP_HOST'});
+        my $dest_addr   = inet_ntoa($dest_addr_p);
+        if ($dest_addr ne $ENV{'SERVER_ADDR'}) {
+            print STDERR "Using alternate peer address: ".$ENV{'SERVER_ADDR'}.":".$ENV{'SERVER_PORT'}."\n";
+            $opts = ['PeerAddr' => $ENV{'SERVER_ADDR'}, 'PeerPort' => $ENV{'SERVER_PORT'}]
+        }
+    }
+
+    my $host = $ENV{'HTTP_HOST'};
+    if ($ENV{'SCRIPT_URI'} =~ /^((?:\w+)\:\/\/.+?)\//) {
+       $base_URL = $1;
+    } else {
+        my $http_protocol =  'http';
+        if ($ENV{'SCRIPT_URI'} =~ /^(\w+)\:\/\//) {
+          $http_protocol = $1;
+        } elsif (exists($ENV{'HTTPS'}) && $ENV{'HTTPS'} eq 'on') {
+          $http_protocol = 'https';
+        }
+
         $base_URL         =  $http_protocol . "://" .  $ENV{'HTTP_HOST'}; 
         if ( ( $http_protocol eq 'http'  && $ENV{'SERVER_PORT'} =~ /\S/ && $ENV{'SERVER_PORT'} != 80) ||
              ( $http_protocol eq 'https' && $ENV{'SERVER_PORT'} =~ /\S/ && $ENV{'SERVER_PORT'} != 443) ) {
-             $base_URL .= $ENV{'SERVER_PORT'};
+             $base_URL .= ':'.$ENV{'SERVER_PORT'};
         }
-        if (exists($ENV{'SERVER_ADDR'}) && $ENV{'SERVER_ADDR'} =~ /\S/ && exists($ENV{'SERVER_PORT'}) && $ENV{'SERVER_PORT'} =~ /^\d+$/) {
-          my $dest_addr_p = gethostbyname($ENV{'HTTP_HOST'});
-          my $dest_addr   = inet_ntoa($dest_addr_p);
-          if ($dest_addr ne $ENV{'SERVER_ADDR'}) {
-            $opts = ['PeerAddr' => $ENV{'SERVER_ADDR'}, 'PeerPort' => $ENV{'SERVER_PORT'}]
-          }
-        }
-
-   
-    } else {
-        ErrorOutput('fatal', "\nRunning $0 from the command line?\n"); 
     }
     return ($base_URL, $opts);
 }
@@ -1444,11 +1460,7 @@ sub GetOrigDataStream {
     } 
     my $response = $ua->request($r);
 
-    unless ($response->is_success) {
-        print $response->error_as_HTML . "\n";
-        print "Could not connect to server\n";
-        exit(1);
-    }
+    ErrorOutput('fatal', "Failed sending request to '$remote_url': ".$response->status_line) unless ($response->is_success);
 
     my $data_out = $response->content(); # content without HTTP header
 
