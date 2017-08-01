@@ -212,7 +212,12 @@ sub GetBaseURL {
     ErrorOutput('fatal', "\nRunning $0 from the command line?\n") unless exists($ENV{'HTTP_HOST'}) && exists($ENV{'SCRIPT_URI'});
 
     if (exists($ENV{'SERVER_ADDR'}) && $ENV{'SERVER_ADDR'} =~ /\S/ && exists($ENV{'SERVER_PORT'}) && $ENV{'SERVER_PORT'} =~ /^\d+$/) {
-        my $dest_addr_p = gethostbyname($ENV{'HTTP_HOST'});
+        my ($host, $port) = split(/\:/, $ENV{'HTTP_HOST'}, 2);
+        my $dest_addr_p = gethostbyname($host);
+        if (! defined $dest_addr_p ) {
+            print STDERR "failed to resolve address ".$host."\n";
+            ErrorOutput('fatal', "Failed finding web server address");
+        }
         my $dest_addr   = inet_ntoa($dest_addr_p);
         if ($dest_addr ne $ENV{'SERVER_ADDR'}) {
             print STDERR "Using alternate peer address: ".$ENV{'SERVER_ADDR'}.":".$ENV{'SERVER_PORT'}."\n";
@@ -220,7 +225,6 @@ sub GetBaseURL {
         }
     }
 
-    my $host = $ENV{'HTTP_HOST'};
     if ($ENV{'SCRIPT_URI'} =~ /^((?:\w+)\:\/\/.+?)\//) {
        $base_URL = $1;
     } else {
