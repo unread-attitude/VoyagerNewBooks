@@ -1,5 +1,6 @@
 New Books List
 
+Some Portions copyright 2017 decimal.uprisen.onto@gmail.com 
 Copyright 2000-2017, The University of Texas at Arlington 
 All rights reserved.  See included LICENSE for particulars.
 
@@ -13,7 +14,7 @@ See also:  http://rocky.uta.edu/doran/newbooks/
 "Voyager" and "WebVoyage" are trademarks of Ex Libris 
 
 |------------------------------------------------------------|
-|  Version 7.3 for Tomcat WebVoyage                          |
+|  Version 7.4 for Tomcat WebVoyage                          |
 |------------------------------------------------------------|
 |  UNIX Installation Instructions                            |
 |------------------------------------------------------------|
@@ -69,40 +70,40 @@ Installing the files
 ====================
 
   The New Books List package is available at:
-	http://rocky.uta.edu/doran/newbooks/download.html
+	https://github.com/unread-attitude/VoyagerNewBooks
 
-  Download newBooks-7.3.zip to your server. 
+  Download VoyagerNewBooks-7.4.zip to your server. 
 
   Unzip:
 
-	unzip newBooks-7.3.zip
+	unzip VoyagerNewBooks-7.4.zip
 
-  Note: The newBooks-7.3.zip file should be unzipped on the
+  Note: The VoyagerNewBooks-7.4.zip file should be unzipped on the
         Voyager server, not on your PC with WinZip. 
 
-  The newBooks-7.3.zip package should contain the following files:
+  The VoyagerNewBooks-7.4.zip package should contain the following files:
 
-	./newBooks-7.3/CHANGES
-	./newBooks-7.3/gbsv-jquery.js
-	./newBooks-7.3/INSTALL
-	./newBooks-7.3/jquery-1.2.3.min.js
-	./newBooks-7.3/LICENSE
-	./newBooks-7.3/newBooks.cgi
-	./newBooks-7.3/newBooks.css
-	./newBooks-7.3/newBooks.Chinese
-	./newBooks-7.3/newBooks.English
-	./newBooks-7.3/newBooks.Finnish
-	./newBooks-7.3/newBooks.ini
-	./newBooks-7.3/newBooks.Language
-	./newBooks-7.3/newBooks.pl
-	./newBooks-7.3/newBooks.Swedish
-	./newBooks-7.3/newBooks.txt
-	./newBooks-7.3/newBooks.Welsh
-	./newBooks-7.3/one-transparent.gif
-	./newBooks-7.3/prereqs.pl
-	./newBooks-7.3/README.filenames
-	./newBooks-7.3/README.unicode
-	./newBooks-7.3/searchNewBooks.html
+	./VoyagerNewBooks-7.4/CHANGES
+	./VoyagerNewBooks-7.4/gbsv-jquery.js
+	./VoyagerNewBooks-7.4/INSTALL
+	./VoyagerNewBooks-7.4/jquery-1.2.3.min.js
+	./VoyagerNewBooks-7.4/LICENSE
+	./VoyagerNewBooks-7.4/newBooks.cgi
+	./VoyagerNewBooks-7.4/newBooks.css
+	./VoyagerNewBooks-7.4/newBooks.Chinese
+	./VoyagerNewBooks-7.4/newBooks.English
+	./VoyagerNewBooks-7.4/newBooks.Finnish
+	./VoyagerNewBooks-7.4/newBooks.ini
+	./VoyagerNewBooks-7.4/newBooks.Language
+	./VoyagerNewBooks-7.4/newBooks.pl
+	./VoyagerNewBooks-7.4/newBooks.Swedish
+	./VoyagerNewBooks-7.4/newBooks.txt
+	./VoyagerNewBooks-7.4/newBooks.Welsh
+	./VoyagerNewBooks-7.4/one-transparent.gif
+	./VoyagerNewBooks-7.4/prereqs.pl
+	./VoyagerNewBooks-7.4/README.filenames
+	./VoyagerNewBooks-7.4/README.unicode
+	./VoyagerNewBooks-7.4/searchNewBooks.html
 
   Create the following directories (these directories shouldn't already
   exist unless there was a previous installation of New Books List 7.0):
@@ -350,20 +351,16 @@ Bug Reports
 
 	Please report bugs to:
 
-	Michael Doran
-	email: doran@uta.edu
-	telephone: 1.817.272.5326
-	telephone: 1.888.565.9023 x25326 (toll-free in U.S.)
+	James
+	email: decimal.uprisen.onto@gmail.com
 
 
 Support
 -------
 
-	I am a Systems Librarian with a full time job quite apart from 
-	creating, enhancing, documenting, distributing, and supporting 
-	the New Books List.  Please keep that in mind and thoroughly
-	read these installation instructions, and the program comments, 
-	before contacting me for help.
+	
+	Please thoroughly read these installation instructions, and
+	the program comments, before contacting me for help.
 
 	This is not meant to discourage you from contacting me,
 	particularly in regard to bugs or issues that may impact other 
