@@ -2,7 +2,7 @@
 
 ###############################################################################
 #                                                                             #
-#  New Books List, Version 7.4 for Unix                                       #
+#  New Books List, Version 7.5 for Unix                                       #
 #                                                                             #
 #  newBooks.cgi for 'vwebv' version of WebVoyage                              #
 #                                                                             #
@@ -38,7 +38,7 @@ use Socket qw(inet_ntoa);
 
 use lib '../../newbooks';
 
-my $version     = "7.3 for Unix";
+my $version     = "7.5 for Unix";
 my $this_script = "/vwebv/newBooks.cgi";
 my $data_stream = '';
 my %formdata;
