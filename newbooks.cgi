@@ -199,6 +199,12 @@ sub LoadLangModule {
             return;
         }
     }
+    if (exists $NewBooksIni::language_modules{'en_US'}) {
+        require "$NewBooksIni::language_modules{'en_US'}";
+        print STDERR "$0 defaulting to laguage module '".$NewBooksIni::language_modules{'en_US'}."' for skin '$skin'\n";
+        return
+    }
+    ErrorOutput('fatal', "\nNo language module defined in newBooks.ini for skin '$skin'");
 }
 
 
