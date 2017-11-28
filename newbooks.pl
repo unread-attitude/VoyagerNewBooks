@@ -284,7 +284,7 @@ sub DoQuery {
 
     # Output the results to a file
     open (OUTFILE, ">$report_dir/$out_file")
-	|| die "Cannot create/open output file: $!";
+	|| die "Cannot create/open output file $report_dir/$out_file: $!";
 
     while( my (@entry) = $sth->fetchrow_array() ) {
 	if ($entry[0]) { 
